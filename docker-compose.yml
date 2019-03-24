@@ -12,7 +12,9 @@ services:
     volumes:
       - ./:/usr/app
       - /usr/app/node_modules
-    command: npm run watch
+    
+    # This command is defined in packages.json file
+    command: npm run start-app
   graphql_sample_app_mongo_container:
       image: mongo
       ports:
