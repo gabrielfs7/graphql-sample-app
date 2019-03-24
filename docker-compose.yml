@@ -1,0 +1,33 @@
+version: '3.7'
+
+services: 
+  graphql_sample_app_api_container:
+    build: .
+    ports: 
+        - 8080:8000  
+    networks: 
+      - graphql_sample_app_network
+    depends_on: 
+      - graphql_sample_app_mongo_container
+    volumes:
+      - ./:/usr/app
+      - /usr/app/node_modules
+    command: npm run watch
+  graphql_sample_app_mongo_container:
+      image: mongo
+      ports:
+        - 27017:27017
+      volumes: 
+        - graphql_sample_app_mongo_data_volume:/data/db
+      environment: 
+        - MONGO_DATA_DIR=/data/db
+        - MONGO_LOG_DIR=/dev/null
+      command: mongod --smallfiles --logpath=/dev/null
+      networks: 
+        - graphql_sample_app_network
+
+volumes:
+  graphql_sample_app_mongo_data_volume:
+      
+networks:
+  graphql_sample_app_network:

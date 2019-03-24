@@ -1,0 +1,29 @@
+{
+  "name": "graphql-sample-app",
+  "version": "1.0.0",
+  "description": "Sample app usding GraphQL + Node + MongoDB",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.19",
+    "npm-watch": "^0.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon ./start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielfs7/graphql-sample-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabrielfs7/graphql-sample-app/issues"
+  },
+  "homepage": "https://github.com/gabrielfs7/graphql-sample-app#readme"
+}
