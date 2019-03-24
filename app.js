@@ -11,15 +11,33 @@ app.use(bodyParser.json());
 // Application will listem to everything pointing to port 8000
 app.listen(8000);
 
+// Temporary storage for users
+const users = [];
+
 // Access http://localhost:8080/graphql
 app.post('/graphql', graphqlHttp({
     schema: buildSchema(`
+        type User {
+            _id: ID!
+            email: String!
+            username: String!
+            password: String!
+            birthDate: String!
+        }
+
+        input CreateUserInput {
+            email: String!
+            username: String!
+            password: String!
+            birthDate: String!
+        }
+
         type RootQuery {
-            users: [String!]!
+            users: [User!]!
         }
 
         type RootMutation {
-            createUser(userName: String): String
+            createUser(input: CreateUserInput): User
         }
 
         schema {
@@ -31,14 +49,20 @@ app.post('/graphql', graphqlHttp({
     rootValue: {
         users: () => {
             // Mocking result for now
-            return [
-                'John',
-                'Paul',
-                'Maria'
-            ]
+            return users;
         },
         createUser: (args) => {
-            return args.userName
+            const user = {
+                _id: Math.random().toString(),
+                email: args.input.email,
+                username: args.input.username,
+                password: args.input.password,
+                birthDate: args.input.birthDate
+            }
+
+            users.push(user);
+
+            return user
         }
     },
     // Enables "Graphiql" testing tool accessible now by http://localhost:8080/graphql

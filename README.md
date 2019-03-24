@@ -22,18 +22,27 @@ The GraphiQL editor will open, so you can test some queries :)
 
 2. Run test queries:
 
-To create an user:
+To create an user and return `_id` and `username`:
 
 ```
 mutation {
-  createUser(userName: "Paul")
+  createUser(input: { email: "test@test.com", username: "Paul", password: "secret", birthDate: "2010-10-10"})
+  {
+    _id,
+    username
+  }
 }
 ```
 
 To list the users:
 
+_Note that now you can specify witch fields you want to receive in the body._
+
 ```
-{
-  users
+query {
+  users {
+    _id
+    username
+  }
 }
 ```
