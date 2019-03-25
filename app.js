@@ -4,11 +4,14 @@ const graphqlHttp = require('express-graphql');
 const { buildSchema } = require('graphql');
 const mongoose = require('mongoose');
 
+// Data mapped on nodemon.json
 const mongoHost = process.env.MONGO_HOST;
 const mongoPort = process.env.MONGO_PORT;
 const mongoUser = process.env.MONGO_USER;
 const mongoPass = process.env.MONGO_PASSWORD;
+const mongoDB = process.env.MONGO_DB
 
+const User = require('./models/user');
 const app = express();
 
 // Temporary storage for users
@@ -48,21 +51,44 @@ app.post('/graphql', graphqlHttp({
     // These are 'resolvers', they must have the same name as inside 'RootQuery' above:
     rootValue: {
         users: () => {
-            // Mocking result for now
-            return users;
+            // Get results from mongodb
+            return User.find()
+                .then(
+                    users => {
+                        // It is necessary to get _doc of each document to remove extra metadata
+                        return users.map(user => {
+                            // I need to translate the mongoDb ObjectId and bithDate to string here
+                            return { ...user._doc, _id: user._doc._id.toString(), birthDate: user._doc.birthDate.toLocaleDateString() } 
+                        });
+                    }
+                ).catch(err => {
+                    throw err;
+                });
         },
         createUser: (args) => {
-            const user = {
-                _id: Math.random().toString(),
+            const user = new User({
                 email: args.input.email,
                 username: args.input.username,
                 password: args.input.password,
-                birthDate: args.input.birthDate
-            }
+                birthDate: new Date(args.input.birthDate)
+            });
 
-            users.push(user);
+            return user.save().then(
+                result => {
+                    console.log('[SUCESS] User saved');
+                    console.log(result);
 
-            return user
+                    // Return the document object from mongoose
+                    return { ...result._doc }
+                }
+            ).catch(
+                err => {
+                    console.log('[ERROR] Saving User');
+                    console.log(err);
+
+                    return err;
+                }
+            );
         }
     },
     // Enables "Graphiql" testing tool accessible now by http://localhost:8080/graphql
@@ -76,11 +102,11 @@ app.use(bodyParser.json());
 app.listen(8000);
 
 // Connect to mongodb
-mongoose.connect(`${mongoUser}:${mongoPass}@mongodb://${mongoHost}:${mongoPort}/graphql`, { useNewUrlParser: true })
+mongoose.connect(`${mongoUser}:${mongoPass}@mongodb://${mongoHost}:${mongoPort}/${mongoDB}`, { useNewUrlParser: true })
     .then(() => {
         console.log('Mongo connection successfuly');
     })
-    .then().catch(err => {
+    .catch(err => {
         console.log("[ERROR] MONGO CONNECTION: "); 
         console.log(err); 
     });
