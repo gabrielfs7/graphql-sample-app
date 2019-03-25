@@ -12,15 +12,27 @@ const mongoUser = process.env.MONGO_USER;
 const mongoPass = process.env.MONGO_PASSWORD;
 const mongoDB = process.env.MONGO_DB
 
-const User = require('./models/user');
 const Task = require('./models/task');
+const User = require('./models/user');
 const app = express();
 
-// Temporary storage for users
-const users = [];
+// Use BodyParser as middleware to handle JSON body requests
+app.use(bodyParser.json());
 
-// Access http://localhost:8080/graphql
-app.post('/graphql', graphqlHttp({
+// Connect to mongodb
+mongoose.connect(`${mongoUser}:${mongoPass}@mongodb://${mongoHost}:${mongoPort}/${mongoDB}`, { useNewUrlParser: true })
+    .then(() => {
+        console.log('Mongo connection successfuly');
+    })
+    .catch(err => {
+        console.log("[ERROR] MONGO CONNECTION: "); 
+        console.log(err); 
+    });
+
+// Application will listem to everything pointing to port 8000
+app.listen(8000);
+
+app.use('/graphql', graphqlHttp({
     schema: buildSchema(`
         type User {
             _id: ID!
@@ -28,6 +40,7 @@ app.post('/graphql', graphqlHttp({
             username: String!
             password: String
             birthDate: String!
+            tasks: [Task!]
         }
 
         type Task {
@@ -35,6 +48,7 @@ app.post('/graphql', graphqlHttp({
             task: String!
             doAt: String!
             status: String!
+            owner: User!
         }
 
         input CreateUserInput {
@@ -51,6 +65,7 @@ app.post('/graphql', graphqlHttp({
 
         type RootQuery {
             users: [User!]!
+            tasks: [Task!]!
         }
 
         type RootMutation {
@@ -117,16 +132,19 @@ app.post('/graphql', graphqlHttp({
         },
         tasks: () => {
             // Get results from mongodb
-            return Task.find()
-                .then(
-                    tasks => {
-                        // It is necessary to get _doc of each document to remove extra metadata
-                        return tasks.map(task => {
-                            // I need to translate the mongoDb ObjectId and doAt to string here
-                            return { ...task._doc, _id: task._doc._id.toString(), doAt: task._doc.doAt.toLocaleDateString() }
-                        });
-                    }
-                ).catch(err => {
+            return Task.find().populate('owner')
+                .then(tasks => {
+                    // Return the document objects from mongoose, but formating fields
+                    return tasks.map(task => {
+                        console.log(task._doc);
+
+                        return { 
+                            ...task._doc, 
+                            _id: task._doc._id.toString(), 
+                            doAt: task._doc.doAt.toLocaleDateString() 
+                        }
+                    });
+                }).catch(err => {
                     throw err;
                 });
         },
@@ -134,7 +152,8 @@ app.post('/graphql', graphqlHttp({
             const task = new Task({
                 task: args.input.task,
                 doAt: args.input.doAt,
-                status: 'pending'
+                status: 'pending',
+                user: '5c9910447bee5a37dab62060'
             });
 
             let createdTask;
@@ -162,19 +181,3 @@ app.post('/graphql', graphqlHttp({
     // Enables "Graphiql" testing tool accessible now by http://localhost:8080/graphql
     graphiql: true
 }));
-
-// Use BodyParser as middleware to handle JSON body requests
-app.use(bodyParser.json());
-
-// Application will listem to everything pointing to port 8000
-app.listen(8000);
-
-// Connect to mongodb
-mongoose.connect(`${mongoUser}:${mongoPass}@mongodb://${mongoHost}:${mongoPort}/${mongoDB}`, { useNewUrlParser: true })
-    .then(() => {
-        console.log('Mongo connection successfuly');
-    })
-    .catch(err => {
-        console.log("[ERROR] MONGO CONNECTION: "); 
-        console.log(err); 
-    });

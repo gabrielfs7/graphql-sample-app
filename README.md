@@ -14,6 +14,14 @@ You can find more informaton here https://graphql.org/.
 docker-compose build -d
 ```
 
+# Initializing application
+
+Execute the command below to start the nodeamon.
+
+```
+docker exec -it graphql-sample-app_graphql_sample_app_api_container_1 "npm run start-app"
+```
+
 # Testing GraphQL
 
 1. Open `http://localhost:8080/graphql`
@@ -69,7 +77,10 @@ query {
     _id,
     task,
     doAt,
-    status
+    status,
+    user {
+      email 
+    }
   }
 }
 ```

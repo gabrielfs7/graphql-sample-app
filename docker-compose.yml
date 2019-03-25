@@ -11,10 +11,9 @@ services:
       - graphql_sample_app_mongo_container
     volumes:
       - ./:/usr/app
-      - /usr/app/node_modules
-    
+      - ./node_modules/:/usr/app/node_modules
     # This command is defined in packages.json file and it keeps the application started and refreshing as it is modified
-    command: npm run start-app
+    command: npm run start
   graphql_sample_app_mongo_container:
       image: mongo
       ports:

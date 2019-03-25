@@ -1,8 +1,7 @@
-mongoose = require('mongoose');
-
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-taskSchema = new Schema({
+const taskSchema = new Schema({
     task: {
         type: String,
         required: true
@@ -15,7 +14,7 @@ taskSchema = new Schema({
         type: String,
         required: true
     },
-    user: {
+    owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     }
