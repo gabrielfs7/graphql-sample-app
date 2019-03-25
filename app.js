@@ -137,19 +137,23 @@ app.post('/graphql', graphqlHttp({
                 status: 'pending'
             });
 
-            return task.save().then(
-                result => {
-                    console.log('[SUCESS] Task saved');
-                    console.log(result);
+            let createdTask;
 
-                    // Return the document object from mongoose
-                    return { ...result._doc }
-                }
-            ).catch(
-                err => {
-                    console.log('[ERROR] Saving Task');
-                    console.log(err);
+            return User.findById('5c9910447bee5a37dab62060') // Mocking user ID for now...
+                .then(user => {
+                    if (!user) {
+                        throw new Error('User not found');
+                    }
 
+                    user.tasks.push(task);
+
+                    createdTask = task;    
+
+                    return user.save();
+                })
+                .then(result => {
+                    return createdTask;
+                }).catch(err => {
                     return err;
                 }
             );

@@ -46,3 +46,30 @@ query {
   }
 }
 ```
+
+To create a task 
+
+```
+mutation {
+  createTask(input: { task: "Pay bills", doAt: "2010-10-10"})
+  {
+    _id,
+    task,
+    doAt,
+    status
+  }
+}
+```
+
+To list the tasks
+
+```
+query {
+  tasks {
+    _id,
+    task,
+    doAt,
+    status
+  }
+}
+```
