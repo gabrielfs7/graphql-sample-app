@@ -17,7 +17,13 @@ const userSchema = new Schema({
     birthDate: {
         type: Date,
         required: true
-    }
+    },
+    tasks: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Task'
+        }
+    ]
 });
 
 module.exports = mongoose.model('User', userSchema);

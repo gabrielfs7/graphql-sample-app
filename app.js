@@ -3,6 +3,7 @@ const express = require('express');
 const graphqlHttp = require('express-graphql');
 const { buildSchema } = require('graphql');
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 // Data mapped on nodemon.json
 const mongoHost = process.env.MONGO_HOST;
@@ -12,6 +13,7 @@ const mongoPass = process.env.MONGO_PASSWORD;
 const mongoDB = process.env.MONGO_DB
 
 const User = require('./models/user');
+const Task = require('./models/task');
 const app = express();
 
 // Temporary storage for users
@@ -24,8 +26,15 @@ app.post('/graphql', graphqlHttp({
             _id: ID!
             email: String!
             username: String!
-            password: String!
+            password: String
             birthDate: String!
+        }
+
+        type Task {
+            _id: ID!
+            task: String!
+            doAt: String!
+            status: String!
         }
 
         input CreateUserInput {
@@ -35,12 +44,18 @@ app.post('/graphql', graphqlHttp({
             birthDate: String!
         }
 
+        input CreateTaskInput {
+            task: String!
+            doAt: String!
+        }
+
         type RootQuery {
             users: [User!]!
         }
 
         type RootMutation {
             createUser(input: CreateUserInput): User
+            createTask(input: CreateTaskInput): Task
         }
 
         schema {
@@ -57,8 +72,13 @@ app.post('/graphql', graphqlHttp({
                     users => {
                         // It is necessary to get _doc of each document to remove extra metadata
                         return users.map(user => {
-                            // I need to translate the mongoDb ObjectId and bithDate to string here
-                            return { ...user._doc, _id: user._doc._id.toString(), birthDate: user._doc.birthDate.toLocaleDateString() } 
+                            // Return the document object from mongoose, but format/override fields
+                            return { 
+                                ...user._doc, 
+                                password: null,
+                                _id: user._doc._id.toString(), 
+                                birthDate: user._doc.birthDate.toLocaleDateString() 
+                            } 
                         });
                     }
                 ).catch(err => {
@@ -66,16 +86,62 @@ app.post('/graphql', graphqlHttp({
                 });
         },
         createUser: (args) => {
-            const user = new User({
-                email: args.input.email,
-                username: args.input.username,
-                password: args.input.password,
-                birthDate: new Date(args.input.birthDate)
+            return bcrypt.hash(args.input.password, 12)
+                .then(hashedPassword => {
+                    const user = new User({
+                        email: args.input.email,
+                        username: args.input.username,
+                        password: hashedPassword,
+                        birthDate: new Date(args.input.birthDate)
+                    });
+
+                    return user.save().then(result => {
+                        console.log('[SUCESS] User saved');
+                        console.log(result);
+        
+                        // Return the document object from mongoose, but format/override fields
+                        return {
+                            ...user._doc, 
+                            password: null,
+                            _id: user._doc._id.toString(), 
+                            birthDate: user._doc.birthDate.toLocaleDateString() 
+                        }
+                    }).catch(err => {
+                        console.log('[ERROR] Saving User');
+                        console.log(err);
+        
+                        return err;
+                    });
+                })
+                .catch(err => {
+                    throw err;
+                });
+        },
+        tasks: () => {
+            // Get results from mongodb
+            return Task.find()
+                .then(
+                    tasks => {
+                        // It is necessary to get _doc of each document to remove extra metadata
+                        return tasks.map(task => {
+                            // I need to translate the mongoDb ObjectId and doAt to string here
+                            return { ...task._doc, _id: task._doc._id.toString(), doAt: task._doc.doAt.toLocaleDateString() }
+                        });
+                    }
+                ).catch(err => {
+                    throw err;
+                });
+        },
+        createTask: (args) => {
+            const task = new Task({
+                task: args.input.task,
+                doAt: args.input.doAt,
+                status: 'pending'
             });
 
-            return user.save().then(
+            return task.save().then(
                 result => {
-                    console.log('[SUCESS] User saved');
+                    console.log('[SUCESS] Task saved');
                     console.log(result);
 
                     // Return the document object from mongoose
@@ -83,7 +149,7 @@ app.post('/graphql', graphqlHttp({
                 }
             ).catch(
                 err => {
-                    console.log('[ERROR] Saving User');
+                    console.log('[ERROR] Saving Task');
                     console.log(err);
 
                     return err;
