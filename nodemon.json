@@ -1,0 +1,8 @@
+{
+    "env": {
+        "MONGO_HOST": "graphql_sample_app_mongo_container",
+        "MONGO_PORT": "27017",
+        "MONGO_USER": "root",
+        "MONGO_PASSWORD": "root"
+    }
+}

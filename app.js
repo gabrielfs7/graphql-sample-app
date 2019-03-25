@@ -2,14 +2,14 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const graphqlHttp = require('express-graphql');
 const { buildSchema } = require('graphql');
+const mongoose = require('mongoose');
+
+const mongoHost = process.env.MONGO_HOST;
+const mongoPort = process.env.MONGO_PORT;
+const mongoUser = process.env.MONGO_USER;
+const mongoPass = process.env.MONGO_PASSWORD;
 
 const app = express();
-
-// Use BodyParser as middleware to handle JSON body requests
-app.use(bodyParser.json());
-
-// Application will listem to everything pointing to port 8000
-app.listen(8000);
 
 // Temporary storage for users
 const users = [];
@@ -68,3 +68,19 @@ app.post('/graphql', graphqlHttp({
     // Enables "Graphiql" testing tool accessible now by http://localhost:8080/graphql
     graphiql: true
 }));
+
+// Use BodyParser as middleware to handle JSON body requests
+app.use(bodyParser.json());
+
+// Application will listem to everything pointing to port 8000
+app.listen(8000);
+
+// Connect to mongodb
+mongoose.connect(`${mongoUser}:${mongoPass}@mongodb://${mongoHost}:${mongoPort}/graphql`, { useNewUrlParser: true })
+    .then(() => {
+        console.log('Mongo connection successfuly');
+    })
+    .then().catch(err => {
+        console.log("[ERROR] MONGO CONNECTION: "); 
+        console.log(err); 
+    });
