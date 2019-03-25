@@ -86,8 +86,14 @@ app.post('/graphql', graphqlHttp({
                 });
         },
         createUser: (args) => {
-            return bcrypt.hash(args.input.password, 12)
-                .then(hashedPassword => {
+            return User.findOne({ email: args.input.email })
+                .then(user => {
+                    if (user) {
+                        throw new Error('User already exists');
+                    }
+
+                    return bcrypt.hash(args.input.password, 12);
+                }).then(hashedPassword => {
                     const user = new User({
                         email: args.input.email,
                         username: args.input.username,
@@ -95,23 +101,15 @@ app.post('/graphql', graphqlHttp({
                         birthDate: new Date(args.input.birthDate)
                     });
 
-                    return user.save().then(result => {
-                        console.log('[SUCESS] User saved');
-                        console.log(result);
-        
-                        // Return the document object from mongoose, but format/override fields
-                        return {
-                            ...user._doc, 
-                            password: null,
-                            _id: user._doc._id.toString(), 
-                            birthDate: user._doc.birthDate.toLocaleDateString() 
-                        }
-                    }).catch(err => {
-                        console.log('[ERROR] Saving User');
-                        console.log(err);
-        
-                        return err;
-                    });
+                    return user.save();
+                }).then(user => {
+                    // Return the document object from mongoose, but format/override fields
+                    return {
+                        ...user._doc, 
+                        password: null,
+                        _id: user._doc._id.toString(), 
+                        birthDate: user._doc.birthDate.toLocaleDateString() 
+                    };
                 })
                 .catch(err => {
                     throw err;
