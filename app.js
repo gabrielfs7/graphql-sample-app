@@ -149,29 +149,31 @@ app.use('/graphql', graphqlHttp({
                 });
         },
         createTask: (args) => {
-            const task = new Task({
+            let owner;
+            let userId = '5c9910447bee5a37dab62060'; //@FIXME Mocking user ID for now...
+            let task = new Task({
                 task: args.input.task,
                 doAt: args.input.doAt,
                 status: 'pending',
-                user: '5c9910447bee5a37dab62060'
+                user: userId
             });
 
-            let createdTask;
-
-            return User.findById('5c9910447bee5a37dab62060') // Mocking user ID for now...
+            return User.findById(userId)
                 .then(user => {
                     if (!user) {
                         throw new Error('User not found');
                     }
 
-                    user.tasks.push(task);
+                    owner = user;
 
-                    createdTask = task;    
+                    return task.save();
+                }).then(result => {
+                    owner.tasks.push(task);
 
-                    return user.save();
+                    return owner.save();
                 })
                 .then(result => {
-                    return createdTask;
+                    return task;
                 }).catch(err => {
                     return err;
                 }
