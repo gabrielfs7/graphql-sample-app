@@ -64,7 +64,10 @@ mutation {
     _id,
     task,
     doAt,
-    status
+    status,
+    owner {
+      email 
+    }
   }
 }
 ```
@@ -78,7 +81,7 @@ query {
     task,
     doAt,
     status,
-    user {
+    owner {
       email 
     }
   }

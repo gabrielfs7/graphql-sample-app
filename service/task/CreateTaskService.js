@@ -5,14 +5,9 @@ class CreateTaskrService
         const User = require('../../models/user');
 
         let owner;
+        let task;
         let userId = '5c9910447bee5a37dab62060'; //@FIXME Mocking user ID for now...
-        let task = new Task({
-            task: args.input.task,
-            doAt: args.input.doAt,
-            status: 'pending',
-            owner: userId
-        });
-
+        
         return User.findById(userId)
             .then(user => {
                 if (!user) {
@@ -20,6 +15,13 @@ class CreateTaskrService
                 }
 
                 owner = user;
+
+                task = new Task({
+                    task: args.input.task,
+                    doAt: args.input.doAt,
+                    status: 'pending',
+                    owner: owner
+                });
 
                 return task.save();
             }).then(result => {
