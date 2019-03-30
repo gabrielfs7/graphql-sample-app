@@ -1,16 +1,10 @@
 const bodyParser = require('body-parser'); 
 const express = require('express');
 const graphqlHttp = require('express-graphql');
-const { buildSchema } = require('graphql');
-const mongoose = require('mongoose');
+const graphqlSchema = require('./graphql/schema');
 const bcrypt = require('bcryptjs');
 
-// Data mapped on nodemon.json
-const mongoHost = process.env.MONGO_HOST;
-const mongoPort = process.env.MONGO_PORT;
-const mongoUser = process.env.MONGO_USER;
-const mongoPass = process.env.MONGO_PASSWORD;
-const mongoDB = process.env.MONGO_DB
+const connection = require('./database/connection');
 
 const Task = require('./models/task');
 const User = require('./models/user');
@@ -19,65 +13,11 @@ const app = express();
 // Use BodyParser as middleware to handle JSON body requests
 app.use(bodyParser.json());
 
-// Connect to mongodb
-mongoose.connect(`${mongoUser}:${mongoPass}@mongodb://${mongoHost}:${mongoPort}/${mongoDB}`, { useNewUrlParser: true })
-    .then(() => {
-        console.log('Mongo connection successfuly');
-    })
-    .catch(err => {
-        console.log("[ERROR] MONGO CONNECTION: "); 
-        console.log(err); 
-    });
-
 // Application will listem to everything pointing to port 8000
 app.listen(8000);
 
 app.use('/graphql', graphqlHttp({
-    schema: buildSchema(`
-        type User {
-            _id: ID!
-            email: String!
-            username: String!
-            password: String
-            birthDate: String!
-            tasks: [Task!]
-        }
-
-        type Task {
-            _id: ID!
-            task: String!
-            doAt: String!
-            status: String!
-            owner: User!
-        }
-
-        input CreateUserInput {
-            email: String!
-            username: String!
-            password: String!
-            birthDate: String!
-        }
-
-        input CreateTaskInput {
-            task: String!
-            doAt: String!
-        }
-
-        type RootQuery {
-            users: [User!]!
-            tasks: [Task!]!
-        }
-
-        type RootMutation {
-            createUser(input: CreateUserInput): User
-            createTask(input: CreateTaskInput): Task
-        }
-
-        schema {
-            query: RootQuery
-            mutation: RootMutation
-        }
-    `),
+    schema: graphqlSchema,
     // These are 'resolvers', they must have the same name as inside 'RootQuery' above:
     rootValue: {
         users: () => {
