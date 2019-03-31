@@ -7,9 +7,9 @@ const connection = require('./database/connection');
 
 const app = express();
 
-const ListUserService = require('./service/user/ListUserService');
+const FindUserService = require('./service/user/FindUserService');
 const CreateUserService = require('./service/user/CreateUserService');
-const ListTaskService = require('./service/task/ListTaskService');
+const FindTaskService = require('./service/task/FindTaskService');
 const CreateTaskService = require('./service/task/CreateTaskService');
 
 // Use BodyParser as middleware to handle JSON body requests
@@ -23,13 +23,13 @@ app.use('/graphql', graphqlHttp({
     // These are 'resolvers', they must have the same name as inside 'RootQuery' schema:
     rootValue: {
         users: () => {
-            return ListUserService.list();
+            return FindUserService.findAll();
         },
         createUser: (args) => {
             return CreateUserService.create(args);
         },
         tasks: () => {
-            return ListTaskService.list();
+            return FindTaskService.findAll();
         },
         createTask: (args) => {
             return CreateTaskService.create(args);
