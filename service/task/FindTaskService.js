@@ -15,7 +15,7 @@ class FindTaskService
                         ...task._doc,
                         _id: task._doc._id.toString(),
                         doAt: task._doc.doAt.toLocaleDateString(),
-                        owner: user.bind(this, task.owner)
+                        owner: user.bind(this, task._doc.owner)
                     };
                 });
             })
@@ -39,7 +39,7 @@ class FindTaskService
                         ...task._doc, 
                         _id: task._doc._id.toString(), 
                         doAt: task._doc.doAt.toLocaleDateString(),
-                        owner: user.bind(this, task.owner)
+                        owner: user.bind(this, task._doc.owner)
                     }
             });
         }).catch(err => {
