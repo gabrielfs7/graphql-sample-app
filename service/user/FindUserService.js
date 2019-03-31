@@ -4,7 +4,7 @@ class FindUserService
         const User = require('../../models/task');
         const FindTaskService = require('../task/FindTaskService');
  
-        const tasks = taskIds => {
+        const findTasks = taskIds => {
             return FindTaskService.findByIds(taskIds);
         }
 
@@ -15,7 +15,7 @@ class FindUserService
                     password: null,
                     _id: user.id,
                     birthDate: user._doc.birthDate.toLocaleDateString(),
-                    tasks: tasks.bind(this, user._doc.tasks)
+                    tasks: findTasks.bind(this, user._doc.tasks)
                 }
             }).catch(err => {
                 throw err;
@@ -26,7 +26,7 @@ class FindUserService
         const User = require('../../models/task');
         const FindTaskService = require('../task/FindTaskService');
 
-        const tasks = taskIds => {
+        const findTasks = taskIds => {
             return FindTaskService.findByIds(taskIds);
         }
 
@@ -38,7 +38,7 @@ class FindUserService
                         password: null,
                         _id: user._doc._id.toString(), 
                         birthDate: user._doc.birthDate.toLocaleDateString(),
-                        tasks: tasks.bind(this, user._doc.tasks)
+                        tasks: findTasks.bind(this, user._doc.tasks)
                     } 
                 });
             }).catch(err => {

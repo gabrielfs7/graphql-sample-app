@@ -4,7 +4,7 @@ class FindTaskService
         const FindUserService = require('../user/FindUserService');
         const Task = require('../../models/task');
 
-        const user = userId => {
+        const findUser = userId => {
             return FindUserService.find(userId);
         }
 
@@ -15,7 +15,7 @@ class FindTaskService
                         ...task._doc,
                         _id: task._doc._id.toString(),
                         doAt: task._doc.doAt.toLocaleDateString(),
-                        owner: user.bind(this, task._doc.owner)
+                        owner: findUser.bind(this, task._doc.owner)
                     };
                 });
             })
@@ -28,7 +28,7 @@ class FindTaskService
         const FindUserService = require('../user/FindUserService');
         const Task = require('../../models/task');
 
-        const user = userId => {
+        const findUser = userId => {
             return FindUserService.find(userId);
         }
 
@@ -37,10 +37,10 @@ class FindTaskService
                 return tasks.map(task => {
                     return { 
                         ...task._doc, 
-                        _id: task._doc._id.toString(), 
+                        _id: task.id, 
                         doAt: task._doc.doAt.toLocaleDateString(),
-                        owner: user.bind(this, task._doc.owner)
-                    }
+                        owner: findUser.bind(this, task._doc.owner)
+                    };
             });
         }).catch(err => {
             throw err;
