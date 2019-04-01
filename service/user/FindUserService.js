@@ -1,36 +1,47 @@
 class FindUserService
 {
-    find(id) {
-        const User = require('../../models/task');
-        const FindTaskService = require('../task/FindTaskService');
- 
-        const findTasks = taskIds => {
-            return FindTaskService.findByIds(taskIds);
-        }
-
-        return User.findById(id)
-            .then(user => {
-                return { 
-                    ...user._doc, 
-                    password: null,
-                    _id: user.id,
-                    birthDate: user._doc.birthDate.toLocaleDateString(),
-                    tasks: findTasks.bind(this, user._doc.tasks)
-                }
-            }).catch(err => {
-                throw err;
-            });
-    }
-
     findAll() {
-        const User = require('../../models/task');
-        const FindTaskService = require('../task/FindTaskService');
+        const Task = require('../../models/task');
+        const User = require('../../models/user');
 
         const findTasks = taskIds => {
-            return FindTaskService.findByIds(taskIds);
+            return Task.find({ _id: { $in: taskIds } })
+                .then(tasks => {
+                    return tasks.map(task => {
+                        return {
+                            ...task._doc,
+                            _id: task._doc._id.toString(),
+                            doAt: task._doc.doAt.toLocaleDateString(),
+                            owner: findUser.bind(this, task._doc.owner)
+                        };
+                    });
+                })
+                .catch(err => {
+                    throw err;
+                });
         }
 
-        return this.User.find()
+        const findUser = userId => {
+            return User.findById(userId)
+                .then(user => {
+                    if (!user) {
+                        throw new Error('User ' + userId + ' not found');
+                    }
+
+                    return { 
+                        ...user._doc, 
+                        password: null,
+                        _id: user.id,
+                        birthDate: user._doc.birthDate.toLocaleDateString(),
+                        tasks: findTasks.bind(this, user._doc.tasks)
+                    };
+                })
+                .catch(err => {
+                    return err;
+                });
+        }
+
+        return User.find()
             .then(users => {
                 return users.map(user => {
                     return { 

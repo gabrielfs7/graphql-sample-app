@@ -1,4 +1,4 @@
-class CreateTaskrService
+class CreateTaskService
 {
     create(args) {
         const Task = require('../../models/task');
@@ -11,7 +11,7 @@ class CreateTaskrService
         return User.findById(userId)
             .then(user => {
                 if (!user) {
-                    throw new Error('User not found');
+                    throw new Error('User ' + userId + ' not found');
                 }
 
                 owner = user;
@@ -38,4 +38,4 @@ class CreateTaskrService
     }
 }
 
-module.exports = new CreateTaskrService();
+module.exports = new CreateTaskService();

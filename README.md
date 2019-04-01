@@ -82,7 +82,11 @@ query {
     doAt,
     status,
     owner {
-      email 
+      email,
+      tasks {
+        task,
+        doAt
+      }
     }
   }
 }
