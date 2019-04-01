@@ -4,34 +4,36 @@ class CreateUserService
         const bcrypt = require('bcryptjs');
         const User = require('../../models/user');
 
-        return User.findOne({ email: args.input.email })
-                .then(user => {
-                    if (user) {
-                        throw new Error('User already exists');
-                    }
+        const newUser = async () => {
+            try {
+                const user = await User.findOne({ email: args.input.email });
 
-                    return bcrypt.hash(args.input.password, 12);
-                }).then(hashedPassword => {
-                    const user = new User({
-                        email: args.input.email,
-                        username: args.input.username,
-                        password: hashedPassword,
-                        birthDate: new Date(args.input.birthDate)
-                    });
+                if (user) {
+                    throw new Error('User already exists');
+                }
 
-                    return user.save();
-                }).then(user => {
-                    // Return the document object from mongoose, but format/override fields
-                    return {
-                        ...user._doc, 
-                        password: null,
-                        _id: user._doc._id.toString(), 
-                        birthDate: user._doc.birthDate.toLocaleDateString() 
-                    };
-                })
-                .catch(err => {
-                    throw err;
+                const hashPassword = await bcrypt.hash(args.input.password, 12);
+                const newUser = new User({
+                    email: args.input.email,
+                    username: args.input.username,
+                    password: hashPassword,
+                    birthDate: new Date(args.input.birthDate)
                 });
+
+                const savedUser = await newUser.save();
+
+                return {
+                    ...savedUser._doc, 
+                    password: null,
+                    _id: savedUser._doc._id.toString(), 
+                    birthDate: savedUser._doc.birthDate.toLocaleDateString() 
+                };
+            } catch (err) {
+                throw err;
+            }
+        };
+
+        return newUser();
     }
 }
 

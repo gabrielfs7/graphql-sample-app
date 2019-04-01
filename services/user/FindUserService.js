@@ -41,7 +41,7 @@ class FindUserService
             }
         }
 
-        return async () => {
+        const users = async () => {
             try {
                 const users = await User.find();
 
@@ -58,6 +58,8 @@ class FindUserService
                 throw err;
             }
         }
+
+        return users();
     }
 }
 
