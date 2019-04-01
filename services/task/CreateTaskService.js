@@ -3,38 +3,34 @@ class CreateTaskService
     create(args) {
         const Task = require('../../models/task');
         const User = require('../../models/user');
-
-        let owner;
-        let task;
-        let userId = '5c9910447bee5a37dab62060'; //@FIXME Mocking user ID for now...
+        const userId = '5c9910447bee5a37dab62060'; //@FIXME Mocking user ID for now...
         
-        return User.findById(userId)
-            .then(user => {
+        try {
+            const createTask = async () => {
+                const user = await User.findById(userId)
+
                 if (!user) {
                     throw new Error('User ' + userId + ' not found');
                 }
 
-                owner = user;
-
-                task = new Task({
+                const task = new Task({
                     task: args.input.task,
                     doAt: args.input.doAt,
                     status: 'pending',
-                    owner: owner
+                    owner: user
                 });
-
-                return task.save();
-            }).then(result => {
-                owner.tasks.push(task);
-
-                return owner.save();
-            })
-            .then(result => {
+    
+                await task.save();
+                await user.tasks.push(task);
+                await user.save();
+    
                 return task;
-            }).catch(err => {
-                return err;
             }
-        );
+
+            return createTask();
+        } catch (err) {
+            throw err;
+        }
     }
 }
 
