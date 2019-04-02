@@ -1,29 +1,11 @@
 class FindUserService
 {
-    findAll() {
-        const Task = require('../../models/task');
-        const User = require('../../models/user');
-
-        const findTasks = async taskIds => {
-            const tasks = await Task.find({ _id: { $in: taskIds } });
-
+    findById() {
+        return async (userId) => {
             try {
-                return tasks.map(task => {
-                    return {
-                        ...task._doc,
-                        _id: task._doc._id.toString(),
-                        doAt: task._doc.doAt.toLocaleDateString(),
-                        owner: findUser.bind(this, task._doc.owner)
-                    };
-                });
-            } catch (err) {
-                throw err;
-            }
-        }
-
-        const findUser = async userId => {
-            try {
-                const user = await User.findById(userId);
+                const findTaskService = require('../task/FindTaskService');
+                const userModel = require('../../models/user');
+                const user = await userModel.findById(userId);
 
                 if (!user) {
                     throw new Error('User ' + userId + ' not found');
@@ -34,16 +16,20 @@ class FindUserService
                     password: null,
                     _id: user.id,
                     birthDate: user._doc.birthDate.toLocaleDateString(),
-                    tasks: findTasks.bind(this, user._doc.tasks)
+                    tasks: findTaskService.findByIds().bind(this, user._doc.tasks)
                 };
             } catch (err) {
                 throw err;
             }
         }
+    }
 
+    findAll() {
         const users = async () => {
             try {
-                const users = await User.find();
+                const findTaskService = require('../task/FindTaskService');
+                const userModel = require('../../models/user');
+                const users = await userModel.find();
 
                 return users.map(user => {
                     return { 
@@ -51,7 +37,7 @@ class FindUserService
                         password: null,
                         _id: user._doc._id.toString(), 
                         birthDate: user._doc.birthDate.toLocaleDateString(),
-                        tasks: findTasks.bind(this, user._doc.tasks)
+                        tasks: findTaskService.findByIds().bind(this, user._doc.tasks)
                     } 
                 });
             } catch (err) {

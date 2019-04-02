@@ -1,59 +1,48 @@
 class FindTaskService
 {
-    findAll() {
-        const Task = require('../../models/task');
-        const User = require('../../models/user');
+    findByIds() {
+        return async (taskIds) => {
+            try {
+                const findUserService = require('../user/FindUserService');
+                const taskModel = require('../../models/task');
 
-        const findTasks = taskIds => {
-            return Task.find({ _id: { $in: taskIds } })
-                .then(tasks => {
-                    return tasks.map(task => {
-                        return {
-                            ...task._doc,
-                            _id: task._doc._id.toString(),
-                            doAt: task._doc.doAt.toLocaleDateString(),
-                            owner: findUser.bind(this, task._doc.owner)
-                        };
-                    });
-                })
-                .catch(err => {
-                    throw err;
-                });
-        }
+                const tasks = await taskModel.find({ _id: { $in: taskIds } });
 
-        const findUser = userId => {
-            return User.findById(userId)
-                .then(user => {
-                    if (!user) {
-                        throw new Error('User ' + userId + ' not found');
-                    }
-
-                    return { 
-                        ...user._doc, 
-                        password: null,
-                        _id: user.id,
-                        birthDate: user._doc.birthDate.toLocaleDateString(),
-                        tasks: findTasks.bind(this, user._doc.tasks)
-                    };
-                })
-                .catch(err => {
-                    return err;
-                });
-        }
-
-        return Task.find()
-            .then(tasks => {
                 return tasks.map(task => {
-                    return { 
-                        ...task._doc, 
+                    return {
+                        ...task._doc,
+                        _id: task._doc._id.toString(),
+                        doAt: task._doc.doAt.toLocaleDateString(),
+                        owner: findUserService.findById().bind(this, task._doc.owner)
+                    }
+                });
+            } catch (err) {
+                throw err;
+            }
+        }
+    }
+
+    findAll() {
+        const findTasks = async () => {
+            try {
+                const findUserService = require('../user/FindUserService');
+                const taskModel = require('../../models/task');
+                const tasks = await taskModel.find();
+    
+                return tasks.map(task => {
+                    return {
+                        ...task._doc,
                         _id: task.id, 
                         doAt: task._doc.doAt.toLocaleDateString(),
-                        owner: findUser.bind(this, task._doc.owner)
-                    };
-            });
-        }).catch(err => {
-            throw err;
-        });
+                        owner: findUserService.findById().bind(this, task._doc.owner)
+                    }
+                });
+            } catch (err) {
+                throw err;
+            }
+        }
+
+        return findTasks();
     }
 }
 
