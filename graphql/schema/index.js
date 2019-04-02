@@ -7,6 +7,8 @@ module.exports = buildSchema(`
             username: String!
             password: String
             birthDate: String!
+            createdAt: String!
+            updatedAt: String!
             tasks: [Task!]
         }
 
@@ -15,6 +17,8 @@ module.exports = buildSchema(`
             task: String!
             doAt: String!
             status: String!
+            createdAt: String!
+            updatedAt: String!
             owner: User!
         }
 
