@@ -1,5 +1,28 @@
 class FindTaskService
 {
+    findById() {
+        return async (taskId) => {
+            try {
+                const findUserService = require('../user/FindUserService');
+                const taskModel = require('../../models/task');
+                const task = await taskModel.findById(taskId);
+
+                if (!task) {
+                    throw new Error('Task ' + taskId + ' not found');
+                }
+
+                return {
+                    ...task._doc,
+                    _id: task._doc._id.toString(),
+                    doAt: task._doc.doAt.toLocaleDateString(),
+                    owner: findUserService.findById().bind(this, task._doc.owner)
+                }
+            } catch (err) {
+                throw err;
+            }
+        }
+    }
+
     findByIds() {
         return async (taskIds) => {
             try {

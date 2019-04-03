@@ -91,3 +91,24 @@ query {
   }
 }
 ```
+
+To watch a task:
+
+```
+mutation {
+  watchTask(input: { taskId: "5ca4fdaccbfb5f37fd8ebc67", userId: "5c9910447bee5a37dab62060"})
+  {
+    _id,
+    createdAt,
+    updatedAt,
+    user {
+      _id,
+      email
+    },
+    task {
+      _id,
+      task
+    }
+  }
+}
+```

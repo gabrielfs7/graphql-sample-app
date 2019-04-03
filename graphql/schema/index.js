@@ -1,6 +1,14 @@
 const { buildSchema } = require('graphql');
 
 module.exports = buildSchema(`
+        type TaskWatcher {
+            _id: ID!
+            task: Task!
+            user: User!
+            createdAt: String!
+            updatedAt: String!
+        }
+
         type User {
             _id: ID!
             email: String!
@@ -34,14 +42,26 @@ module.exports = buildSchema(`
             doAt: String!
         }
 
+        input WatchTaskInput {
+            taskId: ID!
+            userId: ID!
+        }
+
+        input StopWatchTaskInput {
+            id: ID!
+        }
+
         type RootQuery {
             users: [User!]!
             tasks: [Task!]!
+            wachers: [TaskWatcher!]!
         }
 
         type RootMutation {
             createUser(input: CreateUserInput): User
             createTask(input: CreateTaskInput): Task
+            watchTask(input: WatchTaskInput): TaskWatcher
+            stopWatchTask(input: StopWatchTaskInput): TaskWatcher
         }
 
         schema {
