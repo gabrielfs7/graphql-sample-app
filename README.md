@@ -112,3 +112,40 @@ mutation {
   }
 }
 ```
+
+Stop watching a task:
+
+```
+mutation {
+  stopWatchTask(input: { id: "5ca4fff7cbfb5f37fd8ebc6c"})
+  {
+    _id,
+    createdAt,
+    updatedAt
+  }
+}
+```
+
+List watchers:
+
+```
+query {
+  watchers {
+  	_id,
+    createdAt,
+    updatedAt,
+    user {
+      _id, 
+      email
+    },
+    task {
+      _id, 
+      task,
+      owner {
+        _id,
+        email
+      }
+    }
+  }
+}
+```

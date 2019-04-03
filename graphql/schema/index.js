@@ -54,7 +54,7 @@ module.exports = buildSchema(`
         type RootQuery {
             users: [User!]!
             tasks: [Task!]!
-            wachers: [TaskWatcher!]!
+            watchers: [TaskWatcher!]!
         }
 
         type RootMutation {
