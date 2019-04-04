@@ -49,8 +49,13 @@ _Note that now you can specify witch fields you want to receive in the body._
 ```
 query {
   users {
-    _id
-    username
+    _id,
+    username,
+    email,
+    password,
+    birthDate,
+    createdAt,
+    updatedAt
   }
 }
 ```
@@ -66,7 +71,13 @@ mutation {
     doAt,
     status,
     owner {
-      email 
+      _id,
+      username,
+      email,
+      password,
+      birthDate,
+      createdAt,
+      updatedAt 
     }
   }
 }

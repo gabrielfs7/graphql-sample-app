@@ -21,7 +21,6 @@ class FindTaskService
         return async (taskIds) => {
             try {
                 const taskModel = require('../../models/task');
-
                 const tasks = await taskModel.find({ _id: { $in: taskIds } });
 
                 return this.normalizeCollection(tasks);
@@ -53,7 +52,9 @@ class FindTaskService
         return {
             ...task._doc,
             _id: task._doc._id.toString(),
-            doAt: task._doc.doAt.toLocaleDateString(),
+            doAt: new Date(task._doc.doAt).toISOString(),
+            createdAt: new Date(task._doc.createdAt).toISOString(),
+            updatedAt: new Date(task._doc.updatedAt).toISOString(),
             owner: findUserService.findById().bind(this, task._doc.owner)
         }
     }

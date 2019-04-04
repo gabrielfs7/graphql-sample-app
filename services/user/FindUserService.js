@@ -3,7 +3,6 @@ class FindUserService
     findById() {
         return async (userId) => {
             try {
-                const findTaskService = require('../task/FindTaskService');
                 const userModel = require('../../models/user');
                 const user = await userModel.findById(userId);
 
@@ -11,13 +10,7 @@ class FindUserService
                     throw new Error('User ' + userId + ' not found');
                 }
 
-                return { 
-                    ...user._doc, 
-                    password: null,
-                    _id: user.id,
-                    birthDate: user._doc.birthDate.toLocaleDateString(),
-                    tasks: findTaskService.findByIds().bind(this, user._doc.tasks)
-                };
+                return this.normalize(user);
             } catch (err) {
                 throw err;
             }
@@ -27,18 +20,11 @@ class FindUserService
     findAll() {
         const users = async () => {
             try {
-                const findTaskService = require('../task/FindTaskService');
                 const userModel = require('../../models/user');
                 const users = await userModel.find();
 
                 return users.map(user => {
-                    return { 
-                        ...user._doc, 
-                        password: null,
-                        _id: user._doc._id.toString(), 
-                        birthDate: user._doc.birthDate.toLocaleDateString(),
-                        tasks: findTaskService.findByIds().bind(this, user._doc.tasks)
-                    } 
+                    return this.normalize(user);
                 });
             } catch (err) {
                 throw err;
@@ -46,6 +32,21 @@ class FindUserService
         }
 
         return users();
+    }
+
+    normalize(user)
+    {
+        const findTaskService = require('../task/FindTaskService');
+
+        return { 
+            ...user._doc, 
+            password: null,
+            _id: user._doc._id.toString(), 
+            birthDate: new Date(user._doc.birthDate).toISOString(),
+            createdAt: new Date(user._doc.createdAt).toISOString(),
+            updatedAt: new Date(user._doc.updatedAt).toISOString(),
+            tasks: findTaskService.findByIds().bind(this, user._doc.tasks)
+        } 
     }
 }
 
