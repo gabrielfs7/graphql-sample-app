@@ -37,14 +37,15 @@ class FindUserService
     normalize(user)
     {
         const findTaskService = require('../task/FindTaskService');
+        const { toISODate } = require('../../helpers/date');
 
         return { 
             ...user._doc, 
             password: null,
             _id: user._doc._id.toString(), 
-            birthDate: new Date(user._doc.birthDate).toISOString(),
-            createdAt: new Date(user._doc.createdAt).toISOString(),
-            updatedAt: new Date(user._doc.updatedAt).toISOString(),
+            birthDate: toISODate(user._doc.birthDate),
+            createdAt: toISODate(user._doc.createdAt),
+            updatedAt: toISODate(user._doc.updatedAt),
             tasks: findTaskService.findByIds().bind(this, user._doc.tasks)
         } 
     }
