@@ -2,6 +2,7 @@ class LoginUserService
 {
     login(args) {
         const bcrypt = require('bcryptjs');
+        const jsonwebtoken = require('jsonwebtoken');
         const User = require('../../models/user');
 
         const authUser = async () => {
@@ -13,16 +14,16 @@ class LoginUserService
                     throw new Error(errorMessage);
                 }
 
-                const hashPassword = await bcrypt.hash(args.input.password, 12);
+                const matchPassword = await bcrypt.compare(args.input.password, user.password);
 
-                if (user.password !== hashPassword) {
-                    throw new Error(errorMessage + " " + user.password + " " + hashPassword);
+                if (!matchPassword) {
+                    throw new Error(errorMessage);
                 }
 
                 return {
                     userId: user._id.toString(), 
                     token: 'token-expirable',
-                    tokenExpiresAt: new Date().getTime()
+                    tokenExpiresAt: 12345
                 };
             } catch (err) {
                 throw err;
