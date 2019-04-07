@@ -67,7 +67,7 @@ query {
   login(input: {email: "test1@test.com", password:"secret"}) {
     userId,
     token,
-    tokenExpiresAt
+    tokenExpiresIn
   }
 }
 ```

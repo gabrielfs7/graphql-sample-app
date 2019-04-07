@@ -2,7 +2,7 @@ class LoginUserService
 {
     login(args) {
         const bcrypt = require('bcryptjs');
-        const jsonwebtoken = require('jsonwebtoken');
+        const jwt = require('jsonwebtoken');
         const User = require('../../models/user');
 
         const authUser = async () => {
@@ -20,10 +20,20 @@ class LoginUserService
                     throw new Error(errorMessage);
                 }
 
+                const token = jwt.sign(
+                    {
+                        userId: user._id.toString(),
+                    },
+                    'my-jwt-secret',
+                    {
+                        expiresIn: '1h'
+                    }
+                );
+
                 return {
                     userId: user._id.toString(), 
-                    token: 'token-expirable',
-                    tokenExpiresAt: 12345
+                    token: token,
+                    tokenExpiresIn: 1
                 };
             } catch (err) {
                 throw err;
