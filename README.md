@@ -1,6 +1,14 @@
 # graphql-sample-app
-Sample app usding GraphQL + Node + MongoDB
 
+This is a sample app built using GraphQL + NodeJS + MongoDB + React. Its purpose is to test these technologies and to share an working example.
+
+# Tools:
+
+- React https://github.com/facebook/create-react-app
+- MongoDB
+- NodeJS
+- Express
+- GraphiQl
 
 # What is GraphQL? 
 
@@ -10,17 +18,32 @@ You can find more informaton here https://graphql.org/.
 
 # Install
 
+To install backend application:
+
 ```
+cd backend
+docker-compose build -d
+```
+
+To install frontend application:
+
+```
+cd frontend
 docker-compose build -d
 ```
 
 # Initializing application
 
-Execute the command below to start the nodeamon.
+Execute the command below to start the nodeamon for backend application.
 
 ```
-docker exec -it graphql-sample-app_graphql_sample_app_api_container_1 "npm run start-app"
+docker exec -it graphql-sample-app_graphql_sample_app_api_container_1 "npm run start"
 ```
+
+# Accessing App
+
+Open `http://localhost:8081`
+
 
 # Testing GraphQL
 

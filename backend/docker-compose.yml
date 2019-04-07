@@ -4,7 +4,7 @@ services:
   graphql_sample_app_api_container:
     build: .
     ports: 
-        - 8080:8000  
+        - 8080:8000
     networks: 
       - graphql_sample_app_network
     depends_on: 

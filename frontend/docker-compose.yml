@@ -1,0 +1,16 @@
+version: '3.7'
+
+services: 
+  graphql_sample_app_container:
+    build: .
+    ports: 
+        - 8081:3000
+    networks: 
+      - graphql_sample_app_network
+    volumes:
+      - ./:/usr/app
+      - ./node_modules/:/usr/app/node_modules
+    command: npm start
+
+networks:
+  graphql_sample_app_network:
