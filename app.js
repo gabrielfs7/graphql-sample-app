@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const graphqlHttp = require('express-graphql');
 const graphqlSchema = require('./graphql/schema');
+const authMiddleware = require('./middlewares/auth');
 
 const connection = require('./database/connection');
 
@@ -10,6 +11,9 @@ const resolvers = require('./graphql/resolvers/index');
 
 // Use BodyParser as middleware to handle JSON body requests
 app.use(bodyParser.json());
+
+// Use Auth middlerware to check user JWT token
+app.use(authMiddleware);
 
 // Application will listem to everything pointing to port 8000
 app.listen(8000);

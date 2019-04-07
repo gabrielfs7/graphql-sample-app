@@ -8,8 +8,16 @@ const CreateTaskService = require('../../services/task/CreateTaskService');
 const FindTaskWatcherService = require('../../services/task/FindTaskWatcherService');
 const WatchTaskService = require('../../services/task/WatchTaskService');
 
+const authorizeUser = (req) => {
+    if (!req.authenticated) {
+        throw new Error('Unauthorized!');
+    }
+}
+
 module.exports = {
-    users: () => {
+    users: (args, req) => {
+        authorizeUser(req);
+
         return FindUserService.findAll();
     },
     createUser: (args) => {
@@ -18,19 +26,29 @@ module.exports = {
     login: (args) => {
         return LoginUserService.login(args);
     },
-    tasks: () => {
+    tasks: (args, req) => {
+        authorizeUser(req);
+
         return FindTaskService.findAll();
     },
-    createTask: (args) => {
+    createTask: (args, req) => {
+        authorizeUser(req);
+
         return CreateTaskService.create(args);
     },
-    watchers: (args) => {
+    watchers: (args, req) => {
+        authorizeUser(req);
+
         return FindTaskWatcherService.findAll(args);
     },
-    watchTask: (args) => {
+    watchTask: (args, req) => {
+        authorizeUser(req);
+
         return WatchTaskService.watch(args);
     },
-    stopWatchTask: (args) => {
+    stopWatchTask: (args, req) => {
+        authorizeUser(req);
+
         return WatchTaskService.stopWatch(args);
     }
 };
