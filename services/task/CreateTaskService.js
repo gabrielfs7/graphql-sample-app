@@ -1,16 +1,15 @@
 class CreateTaskService
 {
-    create(args) {
+    create(args, currentUserId) {
         const Task = require('../../models/task');
         const userModel = require('../../models/user');
-        const userId = '5c9910447bee5a37dab62060'; //@FIXME Mocking user ID for now...
         
         try {
             const createTask = async () => {
-                const user = await userModel.findById(userId)
+                const user = await userModel.findById(currentUserId);
 
                 if (!user) {
-                    throw new Error('User ' + userId + ' not found');
+                    throw new Error('User ' + currentUserId + ' not found');
                 }
 
                 const task = new Task({

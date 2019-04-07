@@ -34,7 +34,7 @@ module.exports = {
     createTask: (args, req) => {
         authorizeUser(req);
 
-        return CreateTaskService.create(args);
+        return CreateTaskService.create(args, req.authenticatedUser.id);
     },
     watchers: (args, req) => {
         authorizeUser(req);

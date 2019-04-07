@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
                 const tokenPayload = jwt.verify(authHeader, 'my-jwt-secret');
 
                 req.authenticated = true;
-                req.authUser = { 
+                req.authenticatedUser = { 
                     id: tokenPayload.userId 
                 };
             } catch (err) {
