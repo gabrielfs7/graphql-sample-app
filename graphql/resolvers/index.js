@@ -1,5 +1,7 @@
 const FindUserService = require('../../services/user/FindUserService');
 const CreateUserService = require('../../services/user/CreateUserService');
+const LoginUserService = require('../../services/user/LoginUserService');
+
 const FindTaskService = require('../../services/task/FindTaskService');
 const CreateTaskService = require('../../services/task/CreateTaskService');
 
@@ -12,6 +14,9 @@ module.exports = {
     },
     createUser: (args) => {
         return CreateUserService.create(args);
+    },
+    login: (args) => {
+        return LoginUserService.login(args);
     },
     tasks: () => {
         return FindTaskService.findAll();

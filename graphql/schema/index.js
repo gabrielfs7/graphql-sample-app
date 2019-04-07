@@ -30,6 +30,12 @@ module.exports = buildSchema(`
             owner: User!
         }
 
+        type AuthData {
+            userId: ID!
+            token: String!
+            tokenExpiresAt: Int!
+        }
+
         input CreateUserInput {
             email: String!
             username: String!
@@ -51,10 +57,16 @@ module.exports = buildSchema(`
             id: ID!
         }
 
+        input UserLoginInput {
+            email: String!
+            password: String!
+        }
+
         type RootQuery {
             users: [User!]!
             tasks: [Task!]!
             watchers: [TaskWatcher!]!
+            login(input: UserLoginInput): AuthData
         }
 
         type RootMutation {
