@@ -1,3 +1,6 @@
+/**
+ * Validate request Authorization header.
+ */
 module.exports = (req, res, next) => {
     const jwt = require('jsonwebtoken');
     const authHeader = req.get('Authorization'); // Authorization: Bearer <<TOKEN>>

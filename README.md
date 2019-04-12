@@ -59,14 +59,14 @@ The GraphiQL editor will open, so you can test some queries :)
 
 2. Run test queries:
 
-To create an user and return `_id` and `username`:
+To create an user and return `_id` and `email`:
 
 ```
 mutation {
-  createUser(input: { email: "test@test.com", username: "Paul", password: "secret", birthDate: "2010-10-10"})
+  createUser(input: { email: "test@test.com", password: "secret"})
   {
     _id,
-    username
+    email
   }
 }
 ```
@@ -79,10 +79,8 @@ _Note that now you can specify witch fields you want to receive in the body._
 query {
   users {
     _id,
-    username,
     email,
     password,
-    birthDate,
     createdAt,
     updatedAt
   }
@@ -113,10 +111,8 @@ mutation {
     status,
     owner {
       _id,
-      username,
       email,
       password,
-      birthDate,
       createdAt,
       updatedAt 
     }

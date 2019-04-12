@@ -12,9 +12,7 @@ module.exports = buildSchema(`
         type User {
             _id: ID!
             email: String!
-            username: String!
             password: String
-            birthDate: String!
             createdAt: String!
             updatedAt: String!
             tasks: [Task!]
@@ -38,9 +36,7 @@ module.exports = buildSchema(`
 
         input CreateUserInput {
             email: String!
-            username: String!
             password: String!
-            birthDate: String!
         }
 
         input CreateTaskInput {

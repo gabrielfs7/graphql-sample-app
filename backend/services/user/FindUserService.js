@@ -42,8 +42,7 @@ class FindUserService
         return { 
             ...user._doc, 
             password: null,
-            _id: user._doc._id.toString(), 
-            birthDate: toISODate(user._doc.birthDate),
+            _id: user._doc._id.toString(),
             createdAt: toISODate(user._doc.createdAt),
             updatedAt: toISODate(user._doc.updatedAt),
             tasks: findTaskService.findByIds().bind(this, user._doc.tasks)

@@ -3,6 +3,7 @@ const express = require('express');
 const graphqlHttp = require('express-graphql');
 const graphqlSchema = require('./graphql/schema');
 const authMiddleware = require('./middlewares/auth');
+const corsMiddleware = require('./middlewares/cors');
 
 const connection = require('./database/connection');
 
@@ -14,6 +15,9 @@ app.use(bodyParser.json());
 
 // Use Auth middlerware to check user JWT token
 app.use(authMiddleware);
+
+// Use CORS middlerware allow external requests
+app.use(corsMiddleware);
 
 // Application will listem to everything pointing to port 8000
 app.listen(8000);

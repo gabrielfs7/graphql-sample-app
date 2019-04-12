@@ -15,9 +15,7 @@ class CreateUserService
                 const hashPassword = await bcrypt.hash(args.input.password, 12);
                 const newUser = new User({
                     email: args.input.email,
-                    username: args.input.username,
-                    password: hashPassword,
-                    birthDate: new Date(args.input.birthDate)
+                    password: hashPassword
                 });
 
                 const savedUser = await newUser.save();
@@ -25,8 +23,7 @@ class CreateUserService
                 return {
                     ...savedUser._doc, 
                     password: null,
-                    _id: savedUser._doc._id.toString(), 
-                    birthDate: savedUser._doc.birthDate.toLocaleDateString() 
+                    _id: savedUser._doc._id.toString()
                 };
             } catch (err) {
                 throw err;
