@@ -1,0 +1,35 @@
+.login-form {
+    width: 25rem;
+    max-width: 80%;
+    margin: 5rem auto;
+}
+
+.login-form .form-control {
+    margin: 1rem 0;
+}
+
+.login-form .form-control label,
+.login-form .form-control input {
+    width: 100%;
+    display: block;
+}
+
+.login-form .form-control label {
+    margin-bottom: 0.2rem;
+}
+
+.login-form .form-control input {
+    padding: 0.5rem;
+    border-radius: 0.2rem;
+    border: 1px solid #ccc;
+}
+
+.login-form .form-actions button {
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 0.2rem;
+    color: #ffffff;
+    background: #0edbff;
+    border: none;
+    font: inherit;
+}
