@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import TasksPage from './pages/TasksPage';
-import { MainNavigation } from './components/Navigation/MainNavigation';
+import MainNavigation from './components/Navigation/MainNavigation';
 
 import './App.css';
 
@@ -11,10 +11,10 @@ class App extends Component {
     return (
       <BrowserRouter>
         <React.Fragment>
-          <MainNavigation/>
-          <main>
+          <MainNavigation />
+          <main className="main-content">
             <Switch>
-              <Redirect from="/" to="/login" exact/>
+              <Redirect from="/" to="/login" exact />
               <Route path="/login" component={LoginPage} />
               <Route path="/tasks" component={TasksPage} />
             </Switch>
