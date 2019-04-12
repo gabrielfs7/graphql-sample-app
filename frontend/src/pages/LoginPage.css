@@ -32,4 +32,12 @@
     background: #0edbff;
     border: none;
     font: inherit;
+    box-shadow: 0.1rem 0.1rem 0.1rem rgb(0, 0, 0, 0.20);
+    cursor: pointer;
+}
+
+.login-form .form-actions button:hover,
+.login-form .form-actions button:active {
+    background: #17bbd8;
+    color: #ccc;
 }
