@@ -18,6 +18,12 @@ You can find more informaton here https://graphql.org/.
 
 # Install
 
+Create external network shared by frontend and backend applications:
+
+```
+docker network create graphql_sample_app_network
+```
+
 To install backend application:
 
 ```

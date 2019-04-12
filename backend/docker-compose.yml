@@ -32,3 +32,4 @@ volumes:
       
 networks:
   graphql_sample_app_network:
+    external: true
