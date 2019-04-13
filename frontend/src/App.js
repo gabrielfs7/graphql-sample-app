@@ -4,27 +4,78 @@ import SigninPage from './pages/SigninPage';
 import SignupPage from './pages/SignupPage';
 import TasksPage from './pages/TasksPage';
 import MainNavigation from './components/Navigation/MainNavigation';
+import AuthContext from './context/auth-context';
 
 import './App.css';
 
 class App extends Component {
+  state = {
+    userId: null,
+    token: null,
+    tokenExpiresIn: null,
+  };
+
+  login = (userId, token, tokenExpiresIn) => {
+    this.setState({
+      userId: userId,
+      token: token,
+      tokenExpiresIn: tokenExpiresIn
+    });
+
+    console.log('LOGIN - App state changed: ', this.state);
+  };
+
+  logout = () => {
+    this.setState({
+      userId: null,
+      token: null,
+      tokenExpiresIn: null
+    });
+
+    console.log('LOGIN - App state changed: ', this.state);
+  };
+
   render() {
     return (
       <BrowserRouter>
         <React.Fragment>
-          <MainNavigation />
-          <main className="main-content">
-            <Switch>
-              <Redirect from="/" to="/signin" exact />
-              <Route path="/signin" component={SigninPage} />
-              <Route path="/signup" component={SignupPage} />
-              <Route path="/tasks" component={TasksPage} />
-            </Switch>
-          </main>
+          <AuthContext.Provider value={{
+            userId: this.state.userId,
+            token: this.state.token,
+            login: this.login,
+            logout: this.logout
+          }}>
+            <MainNavigation />
+            <main className="main-content">
+              <Switch>
+                {!this.state.token && (
+                  <Redirect from="/" to="/signin" exact />
+                )}
+                {!this.state.token && (
+                  <Redirect from="/tasks" to="/signin" exact />
+                )}
+                {this.state.token && (
+                  <Redirect from="/signin" to="/tasks" exact />
+                )}
+                {this.state.token && (
+                  <Redirect from="/signup" to="/tasks" exact />
+                )}
+                {!this.state.token && (
+                  <Route path="/signin" component={SigninPage} />
+                )}
+                {!this.state.token && (
+                  <Route path="/signup" component={SignupPage} />
+                )}
+                {this.state.token && (
+                  <Route path="/tasks" component={TasksPage} />
+                )}
+              </Switch>
+            </main>
+          </AuthContext.Provider>
         </React.Fragment>
       </BrowserRouter>
     );
-  }
+  };
 }
 
 export default App;

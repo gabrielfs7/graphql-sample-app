@@ -32,12 +32,14 @@ class AbstractSignPage extends React.Component {
                 throw new Error('Failed!');
             }
 
-            return res.json();
-        }).then(jsonResponse => {
-            console.log(jsonResponse);
+            this.handleResponse(res);
         }).catch(err => {
             console.log(err);
         });
+    }
+
+    handleResponse = (res) => {
+        // Override this method
     }
 
     getRequestBody = (email, password) => {
