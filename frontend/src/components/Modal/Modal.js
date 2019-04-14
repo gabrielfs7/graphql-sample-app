@@ -15,17 +15,21 @@ const modal = props => (
         <section className="modal__actions">
             {
                 /**
-                 * Display button id prop is true.
+                 * Display button if prop is true.
                  */
                 props.canCancel && (
-                    <button className="btn">Cancel</button>
+                    <button className="btn" onClick={props.onCancel/* parent class contains the function*/}>
+                        Cancel
+                    </button>
                 )}
             {
                 /**
-                 * Display button id prop is true.
+                 * Display button if prop is true.
                  */
                 props.canConfirm && (
-                    <button className="btn">Confirm</button>
+                    <button className="btn" onClick={props.onConfirm /* parent class contains the function*/}>
+                        Confirm
+                    </button>
                 )}
         </section>
     </div>

@@ -13,6 +13,14 @@ class TasksPage extends Component {
         this.setState({ creatingTask: true });
     }
 
+    modalConfirmHandler = () => {
+        //TODO Implement this.
+    }
+
+    modalCancelHandler = () => {
+        this.setState({ creatingTask: false });
+    }
+
     /**
      * Render JSX component.
      */
@@ -29,7 +37,10 @@ class TasksPage extends Component {
                             <Modal
                                 title="Add Task"
                                 canCancel
-                                canConfirm>
+                                canConfirm
+                                onCancel={this.modalCancelHandler}
+                                onConfirm={this.modalConfirmHandler}
+                            >
                                 <p>My Modal content</p>
                             </Modal>
                         </React.Fragment>
