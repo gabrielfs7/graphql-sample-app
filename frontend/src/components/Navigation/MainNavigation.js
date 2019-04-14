@@ -24,29 +24,29 @@ const mainNavigation = props => (
                                  * Only displays signup if user is not signed in
                                  */
                                 !context.token && (
-                                    <li>
-                                        <NavLink to="/signup">Signup</NavLink>
-                                    </li>
+                                    <React.Fragment>
+                                        <li>
+                                            <NavLink to="/signup">Signup</NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink to="/signin">Signin</NavLink>
+                                        </li>
+                                    </React.Fragment>
                                 )
                             }
                             {
                                 /** 
-                                 * Only displays sigin if user is not signed in 
-                                 */
-                                !context.token && (
-                                    <li>
-                                        <NavLink to="/signin">Signin</NavLink>
-                                    </li>
-                                )
-                            }
-                            {
-                                /**
                                  * Only list tasks is user is signed in
                                  */
                                 context.token && (
-                                    <li>
-                                        <NavLink to="/tasks">Tasks</NavLink>
-                                    </li>
+                                    <React.Fragment>
+                                        <li>
+                                            <NavLink to="/tasks">Tasks</NavLink>
+                                        </li>
+                                        <li>
+                                            <button onClick={context.logout}>Logout</button>
+                                        </li>
+                                    </React.Fragment>
                                 )
                             }
                         </ul>

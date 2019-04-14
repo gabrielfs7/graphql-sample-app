@@ -24,10 +24,10 @@
     border: 1px solid #ccc;
 }
 
-.form .form-actions button {
+.btn {
     padding: 0.5rem;
     margin-right: 0.5rem;
-    border-radius: 0.2rem;
+    border-radius: 0.5rem;
     color: #ffffff;
     background: #0edbff;
     border: none;
@@ -36,8 +36,15 @@
     cursor: pointer;
 }
 
-.form .form-actions button:hover,
-.form .form-actions button:active {
-    background: #17bbd8;
+.btn:hover,
+.btn:active {
+    background: #0edbff;
     color: #ccc;
+}
+
+.actions {
+    width: 90%;
+    padding: 1rem;
+    border: 1px solid #0edbff;
+    border-radius: 0.5rem;
 }

@@ -78,7 +78,7 @@ class AbstractSignPage extends React.Component {
                     <input type="password" required id="password" ref={this.passwordElment} />
                 </div>
                 <div className="form-actions">
-                    <button type="submit">Submit</button>
+                    <button type="submit" className="btn">Submit</button>
                 </div>
             </form>
         );

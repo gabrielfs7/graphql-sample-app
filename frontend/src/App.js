@@ -6,7 +6,7 @@ import TasksPage from './pages/TasksPage';
 import MainNavigation from './components/Navigation/MainNavigation';
 import AuthContext from './context/auth-context';
 
-import './App.css';
+import './App.css'; 
 
 class App extends Component {
     /**
@@ -41,7 +41,7 @@ class App extends Component {
             tokenExpiresIn: null
         });
 
-        console.log('LOGIN - App state changed: ', this.state);
+        console.log('LOGOUT - App state changed: ', this.state);
     };
 
     /**
