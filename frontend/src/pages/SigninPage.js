@@ -1,12 +1,16 @@
 import AbstractSignPage from './AbstractSignPage';
-import AuthContext from '../context/auth-context';
 
 class SigninPage extends AbstractSignPage {
     /**
-     * Necessary to pass the context to the App main component.
+     * @inheritdoc
      */
-    static contextType = AuthContext;
+    getPageTitle() {
+        return 'Sigin';
+    }
 
+    /**
+     * @inheritdoc
+     */
     getRequestBody = (email, password) => {
         return {
             query: `
@@ -22,6 +26,9 @@ class SigninPage extends AbstractSignPage {
         };
     }
 
+    /**
+     * @inheritdoc
+     */
     handleResponse = (res) => {
         return res.json()
             .then(res => {

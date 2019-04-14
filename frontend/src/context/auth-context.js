@@ -1,9 +1,8 @@
-/**
- * Used in entire application to represent application state
- */
-
 import React from 'react';
 
+/**
+ * Used in entire application to represent its state.
+ */
 export default React.createContext({
     token: null,
     userId: null,

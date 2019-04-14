@@ -1,14 +1,28 @@
 import React from 'react';
+import AuthContext from '../context/auth-context';
+
 import './Form.css';
 
 class AbstractSignPage extends React.Component {
+    /**
+     * Necessary to pass the context to the App main component.
+     */
+    static contextType = AuthContext;
+
     constructor(props) {
         super(props);
         this.emailElment = React.createRef();
         this.passwordElment = React.createRef();
-        this.errorMessage = '';
     }
 
+    /**
+     * Get page title.
+     */
+    getPageTitle() {}
+
+    /**
+     * Handle the <form> submition event.
+     */
     submitHandler = (event) => {
         event.preventDefault();
 
@@ -16,7 +30,7 @@ class AbstractSignPage extends React.Component {
         const password = this.passwordElment.current.value;
 
         if (email.trim().length === 0 || password.trim().length === 0) {
-            return; // @TODO Display error here...
+            return;
         }
 
         const requestBody = this.getRequestBody(email, password);
@@ -38,24 +52,30 @@ class AbstractSignPage extends React.Component {
         });
     }
 
-    handleResponse = (res) => {
-        // Override this method
-    }
+    /**
+     * Handle backend API response. Override this method.
+     */
+    handleResponse = (res) => {}
 
-    getRequestBody = (email, password) => {
-        // Override method...
-    }
+    /**
+     * Prepare API request body. Override this method.
+     */
+    getRequestBody = (email, password) => {}
 
+    /**
+     * Render the JSX component of the form.
+     */
     render() {
         return (
             <form className="form" onSubmit={this.submitHandler}>
+                <h1>{this.getPageTitle()}</h1>
                 <div className="form-control">
                     <label htmlFor="email">E-mail</label>
-                    <input type="text" id="email" ref={this.emailElment} />
+                    <input type="text" required id="email" ref={this.emailElment} />
                 </div>
                 <div className="form-control">
                     <label htmlFor="password">Password</label>
-                    <input type="password" id="password" ref={this.passwordElment} />
+                    <input type="password" required id="password" ref={this.passwordElment} />
                 </div>
                 <div className="form-actions">
                     <button type="submit">Submit</button>

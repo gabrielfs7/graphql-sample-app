@@ -4,6 +4,11 @@ import AuthContext from '../../context/auth-context';
 
 import './MainNavigation.css';
 
+/**
+ * Main navigation JSX component.
+ * 
+ * @param {*} props 
+ */
 const mainNavigation = props => (
     <AuthContext.Consumer>
         {(context) => {
