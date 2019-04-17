@@ -2,6 +2,7 @@ import React from 'react';
 import AuthContext from '../context/auth-context';
 
 import './Form.css';
+import './SignPage.css';
 
 class AbstractSignPage extends React.Component {
     /**
@@ -67,7 +68,7 @@ class AbstractSignPage extends React.Component {
      */
     render() {
         return (
-            <form className="form" onSubmit={this.submitHandler}>
+            <form className="sign-page form" onSubmit={this.submitHandler}>
                 <h1>{this.getPageTitle()}</h1>
                 <div className="form-control">
                     <label htmlFor="email">E-mail</label>

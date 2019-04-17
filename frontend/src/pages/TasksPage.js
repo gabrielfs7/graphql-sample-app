@@ -3,11 +3,19 @@ import Modal from '../components/Modal/Modal'
 import Backdrop from '../components/Backdrop/Backdrop';
 
 import './Form.css';
+import './TasksPage.css';
 
 class TasksPage extends Component {
     state = {
         creatingTask: false
     };
+
+    constructor(props) {
+        super(props);
+        this.task = React.createRef();
+        this.doAt = React.createRef();
+        this.status = React.createRef();
+    }
 
     startCreateEventHandler = () => {
         this.setState({ creatingTask: true });
@@ -41,7 +49,24 @@ class TasksPage extends Component {
                                 onCancel={this.modalCancelHandler}
                                 onConfirm={this.modalConfirmHandler}
                             >
-                                <p>My Modal content</p>
+                                <form className="tasks-page form" onSubmit={this.submitHandler}>
+                                    <div className="form-control">
+                                        <label htmlFor="task">Task</label>
+                                        <input type="text" required id="task" ref={this.task} />
+                                    </div>
+                                    <div className="form-control">
+                                        <label htmlFor="doAt">Do at</label>
+                                        <input type="datetime-local" required id="doAt" ref={this.doAt} />
+                                    </div>
+                                    <div className="form-control">
+                                        <label htmlFor="status">Status</label>
+                                        <select required id="doAt" ref={this.status} >
+                                            <option value="pending">Pending</option>
+                                            <option value="complete">Complete</option>
+                                            <option value="canceled">Canceled</option>
+                                        </select>
+                                    </div>
+                                </form>
                             </Modal>
                         </React.Fragment>
                     )}
