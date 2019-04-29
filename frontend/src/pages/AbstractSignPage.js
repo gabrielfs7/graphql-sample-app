@@ -39,7 +39,7 @@ class AbstractSignPage extends React.Component {
         const apiRequestService = new ApiRequestService();
 
         apiRequestService.post({}, requestQueryBody).then(result => {
-            console.log('SIGN PAGE RESULT: ');
+            console.log('SIGN PAGE SUBMITED: ');
             console.log(result);
 
             this.handleResponse(result);
