@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from '../components/Modal/Modal'
 import Backdrop from '../components/Backdrop/Backdrop';
 import AuthContext from './../context/auth-context';
+import ManageTaskService from '../services/ManageTaskService';
 
 import './Form.css';
 import './TasksPage.css';
@@ -18,6 +19,7 @@ class TasksPage extends Component {
         this.taskRef = React.createRef();
         this.doAtRef = React.createRef();
         this.statusRef = React.createRef();
+        this.manageTaskService = new ManageTaskService();
     }
 
     startCreateEventHandler = () => {
@@ -25,53 +27,12 @@ class TasksPage extends Component {
     }
 
     modalConfirmHandler = () => {
-        const task = this.taskRef.current.value;
-        const doAt = this.doAtRef.current.value;
-        const status = this.statusRef.current.value;
-
-        if (
-            task.trim().length === 0 ||
-            doAt.trim().length === 0 ||
-            status.trim().length === 0
-        ) {
-            return; //@TODO Display error to user...
-        }
-
-        const taskObject = {task, doAt, status};
-
-        console.log(taskObject);
-
-        const requestBody = {
-            query: `
-                mutation {
-                    createTask(input: { task: "${task}", doAt: "${doAt}" })
-                    {
-                        _id,
-                        task,
-                        doAt
-                    }
-                }
-            `
-        };
-
-        const jwtToken = this.context.token;
-
-        fetch('http://localhost:8080/graphql', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + jwtToken
-            },
-            body: JSON.stringify(requestBody)
-        }).then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Failed!');
-            }
-
-            console.log(res.json()); //@TODO This should be listed now.
-        }).catch(err => {
-            console.log(err);
-        });
+        this.manageTaskService.create(
+            this.context,
+            this.taskRef.current.value,
+            this.doAtRef.current.value,
+            this.statusRef.current.value
+        );
     }
 
     modalCancelHandler = () => {
