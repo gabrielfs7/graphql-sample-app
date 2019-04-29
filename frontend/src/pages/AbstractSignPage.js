@@ -1,5 +1,6 @@
 import React from 'react';
 import AuthContext from '../context/auth-context';
+import ApiRequestService from '../services/ApiRequestService';
 
 import './Form.css';
 import './SignPage.css';
@@ -34,22 +35,18 @@ class AbstractSignPage extends React.Component {
             return;
         }
 
-        const requestBody = this.getRequestBody(email, password);
+        const requestQueryBody = this.getRequestBody(email, password);
+        const apiRequestService = new ApiRequestService();
 
-        fetch('http://localhost:8080/graphql', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
-        }).then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Failed!');
-            }
+        apiRequestService.post({}, requestQueryBody).then(result => {
+            console.log('SIGN PAGE RESULT: ');
+            console.log(result);
 
-            this.handleResponse(res);
-        }).catch(err => {
+            this.handleResponse(result);
+        }).catch( err => {
+            console.log('SIGN PAGE ERROR!!!!! ');
             console.log(err);
+            throw err;
         });
     }
 

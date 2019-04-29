@@ -12,32 +12,26 @@ class SigninPage extends AbstractSignPage {
      * @inheritdoc
      */
     getRequestBody = (email, password) => {
-        return {
-            query: `
-                query {
-                    login(input: { email: "${email}", password: "${password}"})
-                    {
-                        userId,
-                        token,
-                        tokenExpiresIn
-                    }
+        return `query {
+                login(input: { email: "${email}", password: "${password}"})
+                {
+                    userId,
+                    token,
+                    tokenExpiresIn
                 }
-            `
-        };
+            }
+        `;
     }
 
     /**
      * @inheritdoc
      */
     handleResponse = (res) => {
-        return res.json()
-            .then(res => {
-                this.context.login(
-                    res.data.login.userId,
-                    res.data.login.token,
-                    res.data.login.tokenExpiresIn,
-                );
-            });
+        this.context.login(
+            res.data.login.userId,
+            res.data.login.token,
+            res.data.login.tokenExpiresIn,
+        );
     }
 }
 

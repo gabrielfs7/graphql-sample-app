@@ -12,18 +12,15 @@ class SignupPage extends AbstractSignPage {
      * @inheritdoc
      */
     getRequestBody = (email, password) => {
-        return {
-            query: `
-                mutation {
-                    createUser(input: { email: "${email}", password: "${password}"})
-                    {
-                        _id,
-                        email,
-                        password
-                    }
+        return `mutation {
+                createUser(input: { email: "${email}", password: "${password}"})
+                {
+                    _id,
+                    email,
+                    password
                 }
-            `
-        };
+            }
+        `;
     }
 }
 
