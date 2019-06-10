@@ -51,6 +51,10 @@ class TasksPage extends Component {
             this.taskRef.current.value,
             this.doAtRef.current.value,
             this.statusRef.current.value
+        ).then(
+            result => {
+                this.fetchEvents();
+            }
         );
     }
 
