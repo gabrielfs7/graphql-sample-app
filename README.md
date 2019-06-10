@@ -40,10 +40,13 @@ docker-compose build -d
 
 # Initializing application
 
-Execute the command below to start the nodeamon for backend application.
+Execute the command below to start the nodeamon for backend application and start react frontend application.
+
+__This is necessary, cause sometimes the docker-compose command does not work properly.__
 
 ```
 docker exec -it backend_graphql_sample_app_api_container_1 "npm run start"
+docker exec -it frontend_graphql_sample_app_container_1 "npm run start"
 ```
 
 # Accessing App

@@ -10,7 +10,7 @@ services:
     volumes:
       - ./:/usr/app
       - ./node_modules/:/usr/app/node_modules
-    command: npm start
+    command: npm run start
 
 networks:
   graphql_sample_app_network:
