@@ -9,7 +9,8 @@ import './TasksPage.css';
 
 class TasksPage extends Component {
     state = {
-        creatingTask: false
+        creatingTask: false,
+        taskList: []
     };
 
     static contextType = AuthContext;
@@ -20,6 +21,24 @@ class TasksPage extends Component {
         this.doAtRef = React.createRef();
         this.statusRef = React.createRef();
         this.manageTaskService = new ManageTaskService();
+    }
+
+    componentDidMount() {
+        this.fetchEvents();
+    }
+
+    fetchEvents() {
+        this.manageTaskService.list(this.context).then(
+            result => {
+                this.setState({ 
+                    creatingTask: false,  
+                    taskList: result.data.tasks
+                });
+
+                console.log('STATE');
+                console.log(this.state);
+            }
+        );
     }
 
     startCreateEventHandler = () => {
@@ -43,6 +62,10 @@ class TasksPage extends Component {
      * Render JSX component.
      */
     render() {
+        const taskList = this.state.taskList.map(task => {
+            return <li key={task._id} className="tasks-page__list-item">{task.task}</li>
+        });
+
         return (
             <React.Fragment>
                 {
@@ -58,7 +81,7 @@ class TasksPage extends Component {
                                 canConfirm
                                 onCancel={this.modalCancelHandler}
                                 onConfirm={this.modalConfirmHandler}>
-                                <form className="tasks-page form" onSubmit={this.submitHandler}>
+                                <form className="tasks-page__form form" onSubmit={this.submitHandler}>
                                     <div className="form-control">
                                         <label htmlFor="task">Task</label>
                                         <input type="text" required id="task" ref={this.taskRef} />
@@ -82,6 +105,7 @@ class TasksPage extends Component {
                 <div className="actions">
                     <button className="btn" onClick={this.startCreateEventHandler}>Create Task</button>
                 </div>
+                <ul className="tasks-page__list">{taskList}</ul>
             </React.Fragment>
         );
     }

@@ -1,6 +1,23 @@
 import ApiRequestService from './ApiRequestService';
 
 class ManageTaskService {
+    list = (authContext) => {
+        const requestQueryBody = `
+            query {
+                tasks {
+                    _id,
+                    task,
+                    doAt,
+                    status
+                }
+            }
+        `;
+
+        const apiRequestService = new ApiRequestService();
+        
+        return apiRequestService.post(authContext, requestQueryBody);
+    }
+
     create = (authContext, task, doAt, status) => {
         if (
             task.trim().length === 0 ||
@@ -22,9 +39,8 @@ class ManageTaskService {
         `;
 
         const apiRequestService = new ApiRequestService();
-        const response = apiRequestService.post(authContext, requestQueryBody);
 
-        console.log(response);
+        return apiRequestService.post(authContext, requestQueryBody);
     }
 }
 
