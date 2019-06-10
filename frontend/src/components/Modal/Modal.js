@@ -21,7 +21,8 @@ const modal = props => (
                     <button className="btn" onClick={props.onCancel/* parent class contains the function*/}>
                         Cancel
                     </button>
-                )}
+                )
+            }
             {
                 /**
                  * Display button if prop is true.
@@ -30,7 +31,8 @@ const modal = props => (
                     <button className="btn" onClick={props.onConfirm /* parent class contains the function*/}>
                         Confirm
                     </button>
-                )}
+                )
+            }
         </section>
     </div>
 );

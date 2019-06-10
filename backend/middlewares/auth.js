@@ -12,14 +12,14 @@ module.exports = (req, res, next) => {
 
         if (authToken && authToken.length > 1) {
             try {
-                const tokenPayload = jwt.verify(authHeader, 'my-jwt-secret');
+                const tokenPayload = jwt.verify(authToken, 'my-jwt-secret');
 
                 req.authenticated = true;
                 req.authenticatedUser = { 
                     id: tokenPayload.userId 
                 };
             } catch (err) {
-                console.log('Invalid auth token header');
+                console.log('Invalid auth token header');                
             }
         }
     }

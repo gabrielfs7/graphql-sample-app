@@ -4,7 +4,6 @@ const graphqlHttp = require('express-graphql');
 const graphqlSchema = require('./graphql/schema');
 const authMiddleware = require('./middlewares/auth');
 const corsMiddleware = require('./middlewares/cors');
-
 const connection = require('./database/connection');
 
 const app = express();

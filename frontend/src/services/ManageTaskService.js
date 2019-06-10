@@ -10,8 +10,6 @@ class ManageTaskService {
             throw new Error('Invalid task fields');
         }
 
-        const apiRequestService = new ApiRequestService();
-
         const requestQueryBody = `
             mutation {
                 createTask(input: { task: "${task}", doAt: "${doAt}" })
@@ -23,6 +21,7 @@ class ManageTaskService {
             }
         `;
 
+        const apiRequestService = new ApiRequestService();
         const response = apiRequestService.post(authContext, requestQueryBody);
 
         console.log(response);
