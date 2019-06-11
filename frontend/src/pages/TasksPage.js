@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Modal from '../components/Modal/Modal'
+import Modal from '../components/Modal/Modal';
+import TaskList from '../components/Task/TaskList';
 import Backdrop from '../components/Backdrop/Backdrop';
 import AuthContext from './../context/auth-context';
 import ManageTaskService from '../services/ManageTaskService';
@@ -66,10 +67,6 @@ class TasksPage extends Component {
      * Render JSX component.
      */
     render() {
-        const taskList = this.state.taskList.map(task => {
-            return <li key={task._id} className="tasks-page__list-item">{task.task}</li>
-        });
-
         return (
             <React.Fragment>
                 {
@@ -109,7 +106,7 @@ class TasksPage extends Component {
                 <div className="actions">
                     <button className="btn" onClick={this.startCreateEventHandler}>Create Task</button>
                 </div>
-                <ul className="tasks-page__list">{taskList}</ul>
+                <TaskList tasks={this.state.taskList} />
             </React.Fragment>
         );
     }
