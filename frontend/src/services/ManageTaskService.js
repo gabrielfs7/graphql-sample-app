@@ -8,7 +8,11 @@ class ManageTaskService {
                     _id,
                     task,
                     doAt,
-                    status
+                    status,
+                    owner {
+                        _id,
+                        email
+                    }
                 }
             }
         `;

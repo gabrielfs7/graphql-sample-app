@@ -27,8 +27,6 @@ module.exports = {
         return LoginUserService.login(args);
     },
     tasks: (args, req) => {
-        authorizeUser(req);
-
         return FindTaskService.findAll();
     },
     createTask: (args, req) => {

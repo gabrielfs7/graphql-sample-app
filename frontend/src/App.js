@@ -63,9 +63,6 @@ class App extends Component {
                                 {!this.state.token && (
                                     <Redirect from="/" to="/signin" exact />
                                 )}
-                                {!this.state.token && (
-                                    <Redirect from="/tasks" to="/signin" exact />
-                                )}
                                 {this.state.token && (
                                     <Redirect from="/signin" to="/tasks" exact />
                                 )}
@@ -78,9 +75,7 @@ class App extends Component {
                                 {!this.state.token && (
                                     <Route path="/signup" component={SignupPage} />
                                 )}
-                                {this.state.token && (
-                                    <Route path="/tasks" component={TasksPage} />
-                                )}
+                                <Route path="/tasks" component={TasksPage} />
                             </Switch>
                         </main>
                     </AuthContext.Provider>

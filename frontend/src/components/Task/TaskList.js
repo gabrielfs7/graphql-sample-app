@@ -5,7 +5,14 @@ import './TaskList.css';
 
 const taskList = (props) => {
     const tasks = props.tasks.map(task => {
-        return <TaskItem taskId={task._id} taskName={task.task}/>
+        return <TaskItem 
+            key={task._id} 
+            currentUserId={props.currentUserId} 
+            ownerId={task.owner._id}
+            taskId={task._id} 
+            taskDoAt={task.doAt} 
+            taskName={task.task}
+        />
     });
 
     return <ul className="tasks-page__list">{tasks}</ul>;

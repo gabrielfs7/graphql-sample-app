@@ -2,4 +2,19 @@
     margin: 1rem 0;
     padding: 1rem;
     border: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.tasks-page__list-item h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #999;
+}
+
+.tasks-page__list-item h2 {
+    margin: 0;
+    font-size: 0.7rem;
+    color: #999;
 }
