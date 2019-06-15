@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from '../components/Modal/Modal';
 import TaskList from '../components/Task/TaskList';
 import Backdrop from '../components/Backdrop/Backdrop';
+import Spinner from '../components/Spinner/Spinner';
 import AuthContext from '../context/auth-context';
 import ManageTaskService from '../services/ManageTaskService';
 
@@ -10,6 +11,7 @@ import './Tasks.css';
 
 class Tasks extends Component {
     state = {
+        isLoading: false,
         creatingTask: false,
         taskList: []
     };
@@ -24,20 +26,27 @@ class Tasks extends Component {
         this.manageTaskService = new ManageTaskService();
     }
 
+    /**
+     * When React loads the component or every time change its state.
+     */
     componentDidMount() {
-        this.fetchEvents();
+        this.fetchTasks();
     }
 
-    fetchEvents() {
+    fetchTasks() {
+        this.setState({ isLoading: true });
+
+        console.log('STATE');
+        console.log(this.state);
+        console.log('STATE');
+
         this.manageTaskService.list(this.context).then(
             result => {
                 this.setState({ 
                     creatingTask: false,  
+                    isLoading: false,
                     taskList: result.data.tasks
                 });
-
-                console.log('STATE');
-                console.log(this.state);
             }
         );
     }
@@ -54,7 +63,7 @@ class Tasks extends Component {
             this.statusRef.current.value
         ).then(
             result => {
-                this.fetchEvents();
+                this.fetchTasks();
             }
         );
     }
@@ -108,7 +117,11 @@ class Tasks extends Component {
                     <button className="btn" onClick={this.startCreateEventHandler}>Create Task</button>
                 </div>
                 )}
+                { this.state.isLoading ? (
+                <Spinner>Loading</Spinner>
+                ) : (
                 <TaskList tasks={this.state.taskList} currentUserId={this.context.userId} />
+                )}
             </React.Fragment>
         );
     }
