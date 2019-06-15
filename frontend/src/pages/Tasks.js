@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import Modal from '../components/Modal/Modal';
 import TaskList from '../components/Task/TaskList';
 import Backdrop from '../components/Backdrop/Backdrop';
-import AuthContext from './../context/auth-context';
+import AuthContext from '../context/auth-context';
 import ManageTaskService from '../services/ManageTaskService';
 
 import './Form.css';
-import './TasksPage.css';
+import './Tasks.css';
 
-class TasksPage extends Component {
+class Tasks extends Component {
     state = {
         creatingTask: false,
         taskList: []
@@ -114,4 +114,4 @@ class TasksPage extends Component {
     }
 }
 
-export default TasksPage;
+export default Tasks;

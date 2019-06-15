@@ -1,6 +1,12 @@
-import AbstractSignPage from './AbstractSignPage';
+import AbstractSign from './AbstractSign';
+import AuthContext from '../context/auth-context';
 
-class SigninPage extends AbstractSignPage {
+class Signin extends AbstractSign {
+    /**
+     * Necessary to pass the context to the App main component.
+     */
+    static contextType = AuthContext;
+
     /**
      * @inheritdoc
      */
@@ -35,4 +41,4 @@ class SigninPage extends AbstractSignPage {
     }
 }
 
-export default SigninPage;
+export default Signin;

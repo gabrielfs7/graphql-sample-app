@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
-import SigninPage from './pages/SigninPage';
-import SignupPage from './pages/SignupPage';
-import TasksPage from './pages/TasksPage';
+import Signin from './pages/Signin';
+import Signup from './pages/Signup';
+import Tasks from './pages/Tasks';
 import MainNavigation from './components/Navigation/MainNavigation';
 import AuthContext from './context/auth-context';
 
@@ -70,12 +70,12 @@ class App extends Component {
                                     <Redirect from="/signup" to="/tasks" exact />
                                 )}
                                 {!this.state.token && (
-                                    <Route path="/signin" component={SigninPage} />
+                                    <Route path="/signin" component={Signin} />
                                 )}
                                 {!this.state.token && (
-                                    <Route path="/signup" component={SignupPage} />
+                                    <Route path="/signup" component={Signup} />
                                 )}
-                                <Route path="/tasks" component={TasksPage} />
+                                <Route path="/tasks" component={Tasks} />
                             </Switch>
                         </main>
                     </AuthContext.Provider>

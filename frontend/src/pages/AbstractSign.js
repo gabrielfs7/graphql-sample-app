@@ -1,16 +1,10 @@
 import React from 'react';
-import AuthContext from '../context/auth-context';
 import ApiRequestService from '../services/ApiRequestService';
 
 import './Form.css';
-import './SignPage.css';
+import './Sign.css';
 
-class AbstractSignPage extends React.Component {
-    /**
-     * Necessary to pass the context to the App main component.
-     */
-    static contextType = AuthContext;
-
+class AbstractSign extends React.Component {
     constructor(props) {
         super(props);
         this.emailElment = React.createRef();
@@ -83,4 +77,4 @@ class AbstractSignPage extends React.Component {
     }
 }
 
-export default AbstractSignPage;
+export default AbstractSign;

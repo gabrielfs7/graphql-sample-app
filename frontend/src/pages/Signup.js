@@ -1,6 +1,6 @@
-import AbstractSignPage from './AbstractSignPage';
+import AbstractSign from './AbstractSign';
 
-class SignupPage extends AbstractSignPage {
+class Signup extends AbstractSign {
     /**
      * @inheritdoc
      */
@@ -24,4 +24,4 @@ class SignupPage extends AbstractSignPage {
     }
 }
 
-export default SignupPage;
+export default Signup;
