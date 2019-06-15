@@ -103,9 +103,11 @@ class TasksPage extends Component {
                             </Modal>
                         </React.Fragment>
                     )}
+                { this.context.userId && (
                 <div className="actions">
                     <button className="btn" onClick={this.startCreateEventHandler}>Create Task</button>
                 </div>
+                )}
                 <TaskList tasks={this.state.taskList} currentUserId={this.context.userId} />
             </React.Fragment>
         );
