@@ -9,14 +9,12 @@ const taskItem = (props) => {
             <h2>{props.taskDoAt}</h2>
         </div>
         <div>
-            { props.currentUserId === props.ownerId ? (
-                <button className="btn">View details</button> 
-            ) : (
+        <button className="btn" onClick={props.onDetail.bind(this, props.taskId)}>View details</button> 
+            { props.currentUserId !== props.ownerId && (
                 <p>
                     You are not the owner of this task
                 </p>
-            )
-            }
+            )}
         </div>
     </li>
 };

@@ -12,6 +12,7 @@ const taskList = (props) => {
             taskId={task._id} 
             taskDoAt={task.doAt} 
             taskName={task.task}
+            onDetail={props.onViewDetail}
         />
     });
 

@@ -13,6 +13,7 @@ class Tasks extends Component {
     state = {
         isLoading: false,
         creatingTask: false,
+        selectedTask: null,
         taskList: []
     };
 
@@ -69,7 +70,15 @@ class Tasks extends Component {
     }
 
     modalCancelHandler = () => {
-        this.setState({ creatingTask: false });
+        this.setState({ creatingTask: false, selectedTask: null });
+    }
+
+    showTaskDetails = (taskId) => {
+        this.setState(prevState => {
+            const existentTask = prevState.taskList.find(task => task._id === taskId);
+
+            return { selectedTask: existentTask };
+        });
     }
 
     /**
@@ -112,6 +121,20 @@ class Tasks extends Component {
                             </Modal>
                         </React.Fragment>
                     )}
+                { this.state.selectedTask && (
+                    <Modal
+                    title="Task Details"
+                    canCancel
+                    canConfirm
+                    onCancel={this.modalCancelHandler}
+                    onConfirm={this.modalConfirmHandler}>
+                    <form className="tasks-page__form form" onSubmit={this.submitHandler}>
+                        <h2>{ this.state.selectedTask.task }</h2>
+                        <p>Do At: { new Date(this.state.selectedTask.doAt).toLocaleDateString() }</p>
+                        <p>Status: { this.state.selectedTask.status }</p>
+                    </form>
+                </Modal>
+                )}
                 { this.context.userId && (
                 <div className="actions">
                     <button className="btn" onClick={this.startCreateEventHandler}>Create Task</button>
@@ -120,7 +143,11 @@ class Tasks extends Component {
                 { this.state.isLoading ? (
                 <Spinner>Loading</Spinner>
                 ) : (
-                <TaskList tasks={this.state.taskList} currentUserId={this.context.userId} />
+                <TaskList 
+                    tasks={this.state.taskList} 
+                    currentUserId={this.context.userId} 
+                    onViewDetail={this.showTaskDetails}
+                />
                 )}
             </React.Fragment>
         );
