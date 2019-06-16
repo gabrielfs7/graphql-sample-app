@@ -51,9 +51,6 @@ class FindTaskService
         const findTaskWatcherService = require('../task/FindTaskWatcherService');
         const { toISODate } = require('../../helpers/date');
 
-        console.log('==========================================');
-        console.log(task._doc._id.toString());
-
         return {
             ...task._doc,
             _id: task._doc._id.toString(),
