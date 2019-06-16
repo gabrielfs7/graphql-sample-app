@@ -59,12 +59,23 @@ class Tasks extends Component {
             this.doAtRef.current.value,
             this.statusRef.current.value
         ).then(result => {
-                this.fetchTasks();
+            this.fetchTasks();
+        }).catch(err => {
+            alert(err);
         });
     }
 
     modalWatchHandler = () => {
-        console.log('Write WATCH logic here...'); //@TODO Watch the task...
+        this.manageTaskService.watch(
+            this.context,
+            this.state.selectedTask._id
+        ).then(result => {
+            alert('You are watching the task!');
+
+            this.setState({ creatingTask: false, selectedTask: null });
+        }).catch(err => {
+            alert(err);
+        });
     }
 
     modalCancelHandler = () => {
@@ -129,8 +140,8 @@ class Tasks extends Component {
                         <Modal
                             title="Task Details"
                             canCancel
-                            canConfirm
                             onCancel={this.modalCancelHandler}
+                            canConfirm
                             onConfirm={this.modalWatchHandler}
                             onConfirmText="Watch">
                             <form className="tasks-page__form form" onSubmit={this.submitHandler}>

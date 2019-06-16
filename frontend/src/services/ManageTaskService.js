@@ -1,6 +1,10 @@
 import ApiRequestService from './ApiRequestService';
 
 class ManageTaskService {
+    constructor() {
+        this.apiRequestService = new ApiRequestService();
+    }
+
     list = (authContext) => {
         const requestQueryBody = `
             query {
@@ -17,9 +21,7 @@ class ManageTaskService {
             }
         `;
 
-        const apiRequestService = new ApiRequestService();
-        
-        return apiRequestService.post(authContext, requestQueryBody);
+        return this.apiRequestService.post(authContext, requestQueryBody);
     }
 
     create = (authContext, task, doAt, status) => {
@@ -42,9 +44,30 @@ class ManageTaskService {
             }
         `;
 
-        const apiRequestService = new ApiRequestService();
+        return this.apiRequestService.post(authContext, requestQueryBody);
+    }
 
-        return apiRequestService.post(authContext, requestQueryBody);
+    watch = (authContext, taskId) => {
+        const requestQueryBody = `
+            mutation {
+                watchTask(input: { taskId: "${taskId}", userId: "${authContext.userId}" })
+                {
+                     _id,
+                    createdAt,
+                    updatedAt,
+                    user {
+                        _id,
+                        email
+                    },
+                    task {
+                        _id,
+                        task
+                    }
+                }
+            }
+        `;
+
+        return this.apiRequestService.post(authContext, requestQueryBody);
     }
 }
 
