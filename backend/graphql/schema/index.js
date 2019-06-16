@@ -25,7 +25,8 @@ module.exports = buildSchema(`
             status: String!
             createdAt: String!
             updatedAt: String!
-            owner: User!
+            owner: User!,
+            taskWatchers: [TaskWatcher]
         }
 
         type AuthData {

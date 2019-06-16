@@ -13,6 +13,11 @@ class ManageTaskService {
                     task,
                     doAt,
                     status,
+                    taskWatchers {
+                        user {
+                            _id
+                        }
+                    },
                     owner {
                         _id,
                         email
@@ -54,15 +59,7 @@ class ManageTaskService {
                 {
                      _id,
                     createdAt,
-                    updatedAt,
-                    user {
-                        _id,
-                        email
-                    },
-                    task {
-                        _id,
-                        task
-                    }
+                    updatedAt
                 }
             }
         `;

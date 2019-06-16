@@ -10,6 +10,7 @@ const taskList = (props) => {
             currentUserId={props.currentUserId} 
             ownerId={task.owner._id}
             taskId={task._id} 
+            taskWatchers={task.taskWatchers}
             taskDoAt={task.doAt} 
             taskName={task.task}
             onDetail={props.onViewDetail}

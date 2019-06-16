@@ -24,6 +24,8 @@ class WatchTaskService
                 });
     
                 await taskWatcher.save();
+                await task.taskWatchers.push(taskWatcher);
+                await task.save();
     
                 return taskWatcher;
             }

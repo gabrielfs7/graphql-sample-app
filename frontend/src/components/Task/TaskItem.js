@@ -3,6 +3,20 @@ import React from 'react';
 import './TaskItem.css';
 
 const taskItem = (props) => {
+    let isWatched = false;
+
+    if (props.currentUserId) {
+        for (let i in props.taskWatchers) {
+            let taskWatcher = props.taskWatchers[i];
+
+            if (taskWatcher.user._id === props.currentUserId) {
+                isWatched = true;
+
+                break;
+            }
+        }
+    }
+
     return <li className="tasks-page__list-item">
         <div>
             <h1>{props.taskName}</h1>
@@ -14,6 +28,9 @@ const taskItem = (props) => {
                 <p>
                     You are not the owner of this task
                 </p>
+            )}
+            { isWatched && (
+                <p>WATCHING!!!!</p>
             )}
         </div>
     </li>

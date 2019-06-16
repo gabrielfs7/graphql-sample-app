@@ -66,6 +66,12 @@ class Tasks extends Component {
     }
 
     modalWatchHandler = () => {
+        if (!this.context.userId) {
+            alert('You must be logged in to watch the task!');
+
+            return;
+        }
+
         this.manageTaskService.watch(
             this.context,
             this.state.selectedTask._id
@@ -73,6 +79,7 @@ class Tasks extends Component {
             alert('You are watching the task!');
 
             this.setState({ creatingTask: false, selectedTask: null });
+            this.fetchTasks();
         }).catch(err => {
             alert(err);
         });

@@ -48,7 +48,11 @@ class FindTaskService
     normalize(task)
     {
         const findUserService = require('../user/FindUserService');
+        const findTaskWatcherService = require('../task/FindTaskWatcherService');
         const { toISODate } = require('../../helpers/date');
+
+        console.log('==========================================');
+        console.log(task._doc._id.toString());
 
         return {
             ...task._doc,
@@ -56,7 +60,8 @@ class FindTaskService
             doAt: toISODate(task._doc.doAt),
             createdAt: toISODate(task._doc.createdAt),
             updatedAt: toISODate(task._doc.updatedAt),
-            owner: findUserService.findById().bind(this, task._doc.owner)
+            owner: findUserService.findById().bind(this, task._doc.owner),
+            taskWatchers: findTaskWatcherService.findByTaskId().bind(this, task._doc._id.toString())
         }
     }
 

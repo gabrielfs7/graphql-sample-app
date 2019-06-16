@@ -18,7 +18,13 @@ const taskSchema = new Schema(
         owner: {
             type: Schema.Types.ObjectId,
             ref: 'User'
-        }
+        },
+        taskWatchers: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'TaskWatcher'
+            }
+        ]
     },
     {
         timestamps: true

@@ -26,6 +26,31 @@ class FindTaskWatcherService
 
         return findTaskWatchers();
     }
+
+    findByTaskId() {
+        return async (taskId) => {
+            try {
+                const { toISODate } = require('../../helpers/date');
+                const taskWatcherModel = require('../../models/taskWatcher');
+                const userModel = require('../../models/user');
+                const taskModel = require('../../models/task');
+                const taskWatchers = await taskWatcherModel.find({'task' : taskId });
+                
+                return taskWatchers.map(taskWatcher => {
+                    return {
+                        ...taskWatcher._doc,
+                        _id: taskWatcher.id, 
+                        createdAt: toISODate(taskWatcher._doc.createdAt),
+                        updatedAt: toISODate(taskWatcher._doc.updatedAt),
+                        user: userModel.findById(taskWatcher._doc.user.toString()),
+                        task: taskModel.findById(taskWatcher._doc.task.toString())
+                    }
+                });
+            } catch (err) {
+                throw err;
+            }
+        }
+    }
 }
 
 module.exports = new FindTaskWatcherService();
