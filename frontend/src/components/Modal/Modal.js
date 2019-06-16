@@ -29,7 +29,7 @@ const modal = props => (
                  */
                 props.canConfirm && (
                     <button className="btn" onClick={props.onConfirm /* parent class contains the function*/}>
-                        Confirm
+                        {props.onConfirmText}
                     </button>
                 )
             }

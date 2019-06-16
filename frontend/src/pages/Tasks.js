@@ -37,10 +37,6 @@ class Tasks extends Component {
     fetchTasks() {
         this.setState({ isLoading: true });
 
-        console.log('STATE');
-        console.log(this.state);
-        console.log('STATE');
-
         this.manageTaskService.list(this.context).then(
             result => {
                 this.setState({ 
@@ -62,17 +58,22 @@ class Tasks extends Component {
             this.taskRef.current.value,
             this.doAtRef.current.value,
             this.statusRef.current.value
-        ).then(
-            result => {
+        ).then(result => {
                 this.fetchTasks();
-            }
-        );
+        });
+    }
+
+    modalWatchHandler = () => {
+        console.log('Write WATCH logic here...'); //@TODO Watch the task...
     }
 
     modalCancelHandler = () => {
         this.setState({ creatingTask: false, selectedTask: null });
     }
 
+    /**
+     * Find task by id in the list and change the component state to display it.
+     */
     showTaskDetails = (taskId) => {
         this.setState(prevState => {
             const existentTask = prevState.taskList.find(task => task._id === taskId);
@@ -99,7 +100,8 @@ class Tasks extends Component {
                                 canCancel
                                 canConfirm
                                 onCancel={this.modalCancelHandler}
-                                onConfirm={this.modalConfirmHandler}>
+                                onConfirm={this.modalConfirmHandler}
+                                onConfirmText="Confirm">
                                 <form className="tasks-page__form form" onSubmit={this.submitHandler}>
                                     <div className="form-control">
                                         <label htmlFor="task">Task</label>
@@ -122,18 +124,22 @@ class Tasks extends Component {
                         </React.Fragment>
                     )}
                 { this.state.selectedTask && (
-                    <Modal
-                    title="Task Details"
-                    canCancel
-                    canConfirm
-                    onCancel={this.modalCancelHandler}
-                    onConfirm={this.modalConfirmHandler}>
-                    <form className="tasks-page__form form" onSubmit={this.submitHandler}>
-                        <h2>{ this.state.selectedTask.task }</h2>
-                        <p>Do At: { new Date(this.state.selectedTask.doAt).toLocaleDateString() }</p>
-                        <p>Status: { this.state.selectedTask.status }</p>
-                    </form>
-                </Modal>
+                    <React.Fragment>
+                        <Backdrop />
+                        <Modal
+                            title="Task Details"
+                            canCancel
+                            canConfirm
+                            onCancel={this.modalCancelHandler}
+                            onConfirm={this.modalWatchHandler}
+                            onConfirmText="Watch">
+                            <form className="tasks-page__form form" onSubmit={this.submitHandler}>
+                                <h2>{ this.state.selectedTask.task }</h2>
+                                <p>Do At: { new Date(this.state.selectedTask.doAt).toLocaleDateString() }</p>
+                                <p>Status: { this.state.selectedTask.status }</p>
+                            </form>
+                        </Modal>
+                    </React.Fragment>
                 )}
                 { this.context.userId && (
                 <div className="actions">
